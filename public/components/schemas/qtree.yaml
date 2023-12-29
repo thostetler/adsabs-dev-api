@@ -1,0 +1,7 @@
+type: object
+properties:
+  responseHeader:
+    $ref: ./responseHeader.yaml
+  qtree:
+    type: string
+    description: serialized JSON

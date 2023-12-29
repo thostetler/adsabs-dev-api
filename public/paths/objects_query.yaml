@@ -1,0 +1,43 @@
+post:
+  summary: Return a Solr query with object identifiers
+  description: >
+    For a given object, return a Solr query that expands the object to include
+    the SIMBAD and NED identifiers.
+  tags:
+    - objects
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the input object query to expand
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            query:
+              type: array
+              items:
+                type: string
+          example:
+            query:
+              - object:m31
+  responses:
+    '200':
+      description: >
+        JSON containing the expanded search query.
+
+
+        Note: this service also returns a 200 even if an error was encountered;
+        be sure to read the returned error message carefully in that case.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              query:
+                type: string
+            example:
+              query: >-
+                ((=abs:m31 OR simbid:1575544 OR nedid:MESSIER_031)
+                database:astronomy)

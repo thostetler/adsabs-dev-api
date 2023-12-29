@@ -1,0 +1,8 @@
+name: myads_id
+description: >-
+  ID from one myADS notification, taken from the response to
+  `/vault/notifications`
+required: true
+in: path
+schema:
+  type: integer

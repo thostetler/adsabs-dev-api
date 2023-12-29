@@ -1,0 +1,128 @@
+get:
+  summary: View a single library
+  parameters:
+    - name: library_id
+      description: Library ID
+      required: true
+      in: path
+      schema:
+        type: string
+    - name: start
+      description: starting document index
+      in: query
+      schema:
+        type: integer
+        default: 0
+    - name: rows
+      description: number of documents to return
+      in: query
+      schema:
+        type: integer
+        default: 20
+    - name: sort
+      description: document sort order
+      in: query
+      schema:
+        type: string
+        default: date desc
+    - name: fl
+      description: returned fields
+      in: query
+      schema:
+        type: string
+        default: bibcode
+    - name: raw
+      description: returns raw bibcodes from database
+      in: query
+      schema:
+        type: boolean
+        default: false
+  description: >
+    View metadata and contents of a specific library. Takes pagination and field
+    arguments consistent with the "search" endpoint to support sorting and
+    paging for documents within a library. The raw argument passes all bibcodes
+    stored in the library, regardless of whether or not they are currently in
+    ADS.
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: Metadata and contents of the given library
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              metadata:
+                $ref: ../components/schemas/libraryMetadata.yaml
+              documents:
+                type: array
+                description: Array of bibcodes in library
+                items:
+                  type: string
+              solr:
+                type: object
+                description: Response from solr, when validating library contents
+                properties:
+                  response:
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            bibcode:
+                              type: string
+                      numFound:
+                        type: integer
+                      start:
+                        type: integer
+                  responseHeader:
+                    type: object
+                    properties:
+                      QTime:
+                        type: integer
+                      params:
+                        type: object
+                        properties:
+                          q:
+                            type: string
+                          fl:
+                            type: string
+                          start:
+                            type: string
+                          internal_logging_params:
+                            type: string
+                          sort:
+                            type: string
+                          fq:
+                            type: string
+                          rows:
+                            type: string
+                          wt:
+                            type: string
+                      status:
+                        type: integer
+              updates:
+                type: object
+                description: Updates from Solr validation
+                properties:
+                  duplicates_removed:
+                    type: integer
+                    description: Number of bibcodes removed because they are duplicates
+                  update_list:
+                    type: array
+                    description: >
+                      List of dictionaries such that a single element describes
+                      the original bibcode (key) and the updated bibcode now
+                      being stored (item)
+                    items:
+                      type: object
+                  num_updated:
+                    type: integer
+                    description: >-
+                      Number of documents modified based on the response from
+                      Solr

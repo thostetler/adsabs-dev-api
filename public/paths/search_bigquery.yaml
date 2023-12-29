@@ -1,0 +1,88 @@
+post:
+  summary: Search using bigquery
+  description: >
+    Search endpoint which accepts a list of many IDs (bibcodes). Supports
+    paging.
+
+
+    This endpoint accepts standard search query parameters and returns standard
+    search results, but it also accepts as input a very large query (i.e. a
+    query that can be expressed only as a list of search criteria, typically
+    IDs). There is currently no limit to the size of the submitted data (besides
+    buffer/time limits imposed by our API frontend); however, there are severe
+    limits on how often you can call this endpoint. Typically, only 100 requests
+    per day per user are allowed.
+
+
+    The `bigquery` is always executed as a filter **after** the main query (to
+    filter out unwanted results and keep only the results specified by the
+    `bigquery`). You may want to use `q=*:*` to filter contents of the whole
+    database, however it is advisable to make the `q` as specific as possible.
+    Broad queries have higher `qTime` (execution time) and that will be counted
+    towards your rate-limit (in the future).
+
+
+    The bigquery filter is *applied only after* the main search (i.e. it limits
+    results of the main search).
+
+
+    ## Example requests
+
+
+    Python
+
+
+    ```
+      import requests
+      bibcodes="bibcode\n1907AN....174...59.\n1908PA.....16..445.\n1989LNP...334..242S"
+      r = requests.post('https://api.adsabs.harvard.edu/v1/search/bigquery',
+           params={'q':'*:*', 'wt':'json', 'fq':'{!bitset}', 'fl':'bibcode'},
+           headers={'Authorization': 'Bearer:TOKEN'},
+           data=bibcodes)
+    ```
+
+
+    Bash curl
+
+
+    ```
+      curl 'https://api.adsabs.harvard.edu/v1/search/bigquery?q=*:*&fl=bibcode' \
+      -X 'POST' -H 'Authorization: Bearer TOKEN' -H 'Content-Type: big-query/csv' \
+      -d $'bibcode\n1907AN....174...59.\n1908PA.....16..445.\n1989LNP...334..242S'
+    ```
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - $ref: ../components/parameters/q.yaml
+    - $ref: ../components/parameters/fq.yaml
+    - $ref: ../components/parameters/fl.yaml
+    - $ref: ../components/parameters/start.yaml
+    - $ref: ../components/parameters/rows.yaml
+    - $ref: ../components/parameters/sort.yaml
+  requestBody:
+    description: >
+      Newline separated list of values; the first line specifies the index
+      field, the rest are the search values. <br/> Currently, we allow searching
+      in `bibcode` index only. You can submit `canonical` as well as `alternate`
+      bibcodes - the search will automatically match both. In the future, the
+      list of available indexes may be extended.
+
+
+      Note: to correctly format the POST payload, including the newline (\n)
+      characters, in a bash curl request, use ANSI-C quoting (e.g. `$'...'`) as
+      shown in the examples.
+    content:
+      big-query/csv:
+        schema:
+          type: string
+  responses:
+    '200':
+      $ref: ../components/responses/SearchResults.yaml
+    '404':
+      $ref: ../components/responses/SearchResults.yaml
+    '499':
+      description: Server too busy
+    '500':
+      description: Server error
+  tags:
+    - search

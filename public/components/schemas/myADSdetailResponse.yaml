@@ -1,0 +1,10 @@
+type: object
+properties:
+  qid:
+    type: string
+  stateful:
+    type: boolean
+  classes:
+    type: array
+    items:
+      type: string

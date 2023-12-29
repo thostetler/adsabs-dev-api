@@ -1,0 +1,12 @@
+type: object
+properties:
+  responseHeader:
+    $ref: ./responseHeader.yaml
+  numFound:
+    type: integer
+  start:
+    type: integer
+  docs:
+    type: array
+    items:
+      $ref: ./doc.yaml

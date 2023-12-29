@@ -1,0 +1,62 @@
+post:
+  summary: Returns the word cloud data
+  description: >
+    Used to generate our word/concept cloud visualization, given an input query,
+    returns the word cloud data
+  tags:
+    - visualizations
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the input query
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            q:
+              description: >
+                Query string; can include search tags. If using quotes, make
+                sure to escape them.
+              type: array
+              items:
+                type: string
+              example:
+                - author:"huchra, john"
+            sort:
+              type: array
+              items:
+                type: string
+              example:
+                - date desc, bibcode desc
+            rows:
+              description: >
+                Number of records to use in generating the word cloud; currently
+                the maximum allowed is 500.
+              type: array
+              items:
+                type: integer
+              example:
+                - 150
+  responses:
+    '200':
+      description: Word cloud data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              word:
+                description: Keywords are the words in the cloud
+                type: object
+                properties:
+                  idf:
+                    description: Inverse document frequency
+                    type: number
+                  record_count:
+                    type: integer
+                  total_occurrences:
+                    type: integer
+    '403':
+      description: Error with request

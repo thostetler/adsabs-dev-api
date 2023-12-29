@@ -1,0 +1,134 @@
+post:
+  summary: Returns paper network data
+  description: >
+    Used to generate our paper network visualization, given an input set of
+    bibcodes, returns the paper network data
+  tags:
+    - visualizations
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the input bibcodes
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/bibcodesObject.yaml
+  responses:
+    '200':
+      description: Paper network data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              msg:
+                type: object
+                properties:
+                  start:
+                    type: integer
+                  rows:
+                    type: integer
+                  numFound:
+                    type: integer
+              data:
+                type: object
+                properties:
+                  summaryGraph:
+                    type: object
+                    properties:
+                      directed:
+                        type: boolean
+                      graph:
+                        type: array
+                        default: []
+                        items:
+                          type: integer
+                      nodes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            paper_count:
+                              type: integer
+                            node_label:
+                              type: object
+                              properties:
+                                label:
+                                  type: number
+                            total_citations:
+                              type: integer
+                            node_name:
+                              type: integer
+                            top_common_references:
+                              type: object
+                              properties:
+                                bibcode:
+                                  type: number
+                            total_reads:
+                              type: integer
+                            stable_index:
+                              type: integer
+                            id:
+                              type: integer
+                      links:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            source:
+                              type: integer
+                            target:
+                              type: integer
+                            weight:
+                              type: integer
+                      multigraph:
+                        type: boolean
+                  fullGraph:
+                    type: object
+                    properties:
+                      directed:
+                        type: boolean
+                      graph:
+                        type: array
+                        default: []
+                        items:
+                          type: integer
+                      nodes:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            read_count:
+                              type: integer
+                            group:
+                              type: integer
+                            title:
+                              type: string
+                            first_author:
+                              type: string
+                            citation_count:
+                              type: integer
+                            node_name:
+                              type: string
+                            id:
+                              type: integer
+                            nodeWeight:
+                              type: integer
+                      links:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            source:
+                              type: integer
+                            overlap:
+                              type: array
+                              items:
+                                type: string
+                            weight:
+                              type: integer
+                            target:
+                              type: integer
+    '403':
+      description: Error with request

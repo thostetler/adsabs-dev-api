@@ -1,0 +1,22 @@
+type: object
+properties:
+  status:
+    description: Status code as returned by the search engine
+    type: integer
+  QTime:
+    type: integer
+    description: >-
+      search time in millisecs (only search, without faceting, latency and all
+      other steps)
+  parameters:
+    description: Input search parameters
+    type: object
+    properties:
+      q:
+        type: string
+      fl:
+        type: string
+      start:
+        type: string
+      rows:
+        type: string

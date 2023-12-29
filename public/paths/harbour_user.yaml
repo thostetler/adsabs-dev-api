@@ -1,0 +1,26 @@
+get:
+  summary: Fetch user's ADS Classic information
+  description: |
+    Returns a user's ADS Classic registration email and mirror
+  tags:
+    - classic import
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: >
+        JSON containing user's Classic information. User is determined by the
+        API token used.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              classic_email:
+                type: string
+              classic_mirror:
+                type: string
+              twopointoh_email:
+                type: string
+    '400':
+      description: User does not have an ADS Classic account

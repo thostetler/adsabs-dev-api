@@ -1,0 +1,93 @@
+post:
+  summary: Returns author network data
+  description: >
+    Used to generate our author network visualization, given an input set of
+    bibcodes, returns the author network data
+  tags:
+    - visualizations
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the input bibcodes
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/bibcodesObject.yaml
+  responses:
+    '200':
+      description: Author network data
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              msg:
+                type: object
+                properties:
+                  start:
+                    type: integer
+                  rows:
+                    type: integer
+                  numFound:
+                    type: integer
+              data:
+                type: object
+                properties:
+                  bibcode_dict:
+                    type: object
+                    properties:
+                      bibcode:
+                        type: object
+                        properties:
+                          read_count:
+                            type: integer
+                          authors:
+                            type: array
+                            items:
+                              type: string
+                          citation_count:
+                            type: integer
+                          title:
+                            type: string
+                  root:
+                    type: object
+                    properties:
+                      name:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            nodeName:
+                              type: string
+                            nodeWeight:
+                              type: integer
+                            delete:
+                              type: boolean
+                      children:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            read_count:
+                              type: integer
+                            name:
+                              type: string
+                            citation_count:
+                              type: integer
+                            numberName:
+                              type: integer
+                            papers:
+                              type: array
+                              items:
+                                type: string
+                            size:
+                              type: number
+                  link_data:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: integer
+    '403':
+      description: Error with request

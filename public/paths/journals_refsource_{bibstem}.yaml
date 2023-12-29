@@ -1,0 +1,30 @@
+get:
+  summary: Sources of reference data for given publication
+  parameters:
+    - $ref: ../components/parameters/JournalBibstem.yaml
+  description: >
+    For a given bibstem, provide a tally of reference sources for each volume
+    for which references exist.  For a publication with references supplied by
+    the publisher for most or all papers, the `publisher` count should
+    approximately match the paper count for that volume.  References may also
+    originate from other sources for individual papers, such as author-supplied
+    (e.g. ArXiv) preprints and OCR by NASA ADS.
+  tags:
+    - journals
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: >
+        JSON object containing an array of refsource objects, each of which
+        contains the volume, the year, and a dictionary of refsources containing
+        the refsource type and count.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../components/schemas/refsource.yaml
+    '403':
+      description: Authentication failure, unable to get results
+    '500':
+      description: Internal error, unable to get results

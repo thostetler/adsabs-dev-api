@@ -1,0 +1,38 @@
+post:
+  summary: Save a query
+  description: >
+    Save a query for later execution. Can be either a regular query or a
+    bigquery.
+
+
+    ## Example request
+
+
+    ```bash
+      $ curl 'https://api.adsabs.harvard.edu/v1/vault/query' -H 'Authorization: Bearer:TOKEN' \
+        -X POST -d $'{"q":"*:*", "bigquery": "bibcode\\n2015IAUGA..2257982A\\n2015IAUGA..2257768A\\n2015IAUGA..2257639R", "fq": "{!bitset}"}' \
+        -H 'Content-Type: application/json'
+
+      > {"qid": "00b39fe4274760f5d8b348815a661ee2", "numFound": 3}
+    ```
+  requestBody:
+    description: >
+      JSON object holding the values to submit.
+
+
+      Note: to correctly format the POST payload if running a bigquery,
+      including the newline (\n) characters, in a bash curl request, use ANSI-C
+      quoting (e.g. `$'...'`) as shown in the examples.
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/vaultObject.yaml
+  tags:
+    - stored search
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      $ref: ../components/responses/VaultResponse.yaml
+    '404':
+      description: QID object not found

@@ -1,0 +1,20 @@
+get:
+  summary: Return an SVG for a stored query
+  description: >
+    Returns an SVG for a stored query. The image shows the number of results
+    returned by the stored query.
+  tags:
+    - stored search
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - $ref: ../components/parameters/queryId.yaml
+  responses:
+    '200':
+      description: Code of the SVG image
+      content:
+        image/svg+xml:
+          schema:
+            type: string
+            xml:
+              name: svg

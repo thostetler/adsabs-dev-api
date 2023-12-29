@@ -1,0 +1,16 @@
+post:
+  summary: Solar Physics (SoPh) export for multiple bibcodes (POST)
+  description: |
+    Export the given bibcodes in the Solar Physics (SoPh) format
+  tags:
+    - export (LaTeX formats)
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    $ref: ../components/requestBodies/exportBody.yaml
+  responses:
+    '200':
+      $ref: ../components/responses/ExportResponse.yaml
+    '404':
+      description: |
+        No result from Solr

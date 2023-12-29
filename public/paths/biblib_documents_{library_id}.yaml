@@ -1,0 +1,183 @@
+post:
+  summary: Add or remove documents from a library
+  parameters:
+    - name: library_id
+      description: Library ID
+      required: true
+      in: path
+      schema:
+        type: string
+  description: >
+    Add or delete a document to a given library. Returns the number of documents
+    added or removed.
+
+
+    The following type of user can add or remove documents:
+
+    * owner
+
+    * admin
+
+    * write
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing the action to be performed and metadata of the library to
+      be created.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - action
+            - bibcode
+          properties:
+            bibcode:
+              type: array
+              description: |
+                List of bibcodes to be added or removed
+              items:
+                type: string
+            action:
+              type: string
+              description: >
+                'add' or 'remove' to add or remove the given bibcodes from the
+                specified library
+  responses:
+    '200':
+      description: Returns number of bibcodes added or removed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              number_added:
+                type: integer
+                description: |
+                  Number of bibcodes added, if 'add' is used
+              number_removed:
+                type: integer
+                description: |
+                  Number of bibcodes removed, if 'remove' is used
+              invalid_bibcodes:
+                type: array
+                description: >
+                  List of bibcodes that were not found in ADS and could not be
+                  added to the library.
+                items:
+                  type: string
+    '400':
+      description: >
+        No username passed, bad library ID passed, wrong type passed, user
+        requested a non-standard operation or user supplied list of bibcodes
+        contained no valid bibcodes.
+    '403':
+      description: |
+        User does not have permission to perform this operation
+put:
+  summary: Update the metadata of a library
+  parameters:
+    - name: library_id
+      description: Library ID
+      required: true
+      in: path
+      schema:
+        type: string
+  description: |
+    Update the metadata of a given library.
+
+    The following type of user can edit library metadata:
+    * owner
+    * admin
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing the metadata to update. If some fields don't need to be
+      changed, they don't need to be included in the payload.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: |
+                New name of the library
+            description:
+              type: string
+              description: |
+                New library description
+            public:
+              type: boolean
+              description: >
+                true if the library should be publicly viewable, false if it
+                should be private (note that this is case sensitive and should
+                be lower case)
+  responses:
+    '200':
+      description: |
+        Returns the key/value that was requested to be updated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              public:
+                type: boolean
+    '400':
+      description: |
+        No username passed, bad library ID passed, or wrong type passed
+    '403':
+      description: |
+        User does not have permission to perform this operation
+    '409':
+      description: |
+        Duplicate library name exists
+    '410':
+      description: |
+        Library specified does not exist
+delete:
+  summary: Delete a library
+  parameters:
+    - name: library_id
+      description: Library ID
+      required: true
+      in: path
+      schema:
+        type: string
+  description: |
+    Delete the given library.
+
+    The following type of user can delete the library:
+    * owner
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: |
+        Returns empty object
+      content:
+        application/json:
+          schema:
+            type: object
+    '400':
+      description: |
+        No username passed or bad library ID passed
+    '403':
+      description: |
+        User does not have permission to perform this operation
+    '410':
+      description: |
+        Library specified does not exist

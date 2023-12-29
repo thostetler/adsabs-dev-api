@@ -1,0 +1,17 @@
+get:
+  summary: Fetch a list of ADS Classic mirrors
+  description: |
+    Returns the list of mirrors used by ADS Classic
+  tags:
+    - classic import
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: Array of available mirrors
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: string

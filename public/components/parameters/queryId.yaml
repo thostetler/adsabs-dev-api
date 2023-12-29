@@ -1,0 +1,6 @@
+name: queryId
+description: QID returned from the POST operation
+required: true
+in: path
+schema:
+  type: string

@@ -1,0 +1,49 @@
+post:
+  summary: Export the author-affiliations report
+  description: >
+    Export the author-affiliations report, generally used for reporting
+    co-authors and their affiliations to grant agencies. Outputs to CSV, Excel,
+    text, or directly to the browser/terminal. To save to file, use your
+    terminal's flags or programming language's functionality.
+  tags:
+    - author affiliation
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: Formatted report to output, along with format string
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            format:
+              description: |
+                Formatting string for the export.
+              type: string
+              enum:
+                - '| Lastname, Firstname | Affiliation | Last Active Date | [csv]'
+                - >-
+                  | Lastname | Firstname | Affiliation | Last Active Date |
+                  [csv]
+                - >-
+                  | Lastname, Firstname | Affiliation | Last Active Date |
+                  [excel]
+                - >-
+                  | Lastname | Firstname | Affiliation | Last Active Date |
+                  [excel]
+                - Lastname, Firstname(Affiliation)Last Active Date[text]
+                - Lastname, Firstname(Affiliation)Last Active Date[browser]
+            selected:
+              description: |
+                Formatted data to export.
+              type: array
+              items:
+                type: string
+                description: >
+                  Format: Author name (last, first) | affiliation | last active
+                  date (year/month)
+  responses:
+    '200':
+      description: Returns file or text, depending on format requested
+    '400':
+      description: Bad request, check payload

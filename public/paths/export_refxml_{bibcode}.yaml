@@ -1,0 +1,16 @@
+get:
+  summary: REF-XML export for a single bibcode (GET)
+  parameters:
+    - $ref: ../components/parameters/bibcode.yaml
+  description: |
+    Export the given bibcode in the REF-XML format
+  tags:
+    - export (XML formats)
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      $ref: ../components/responses/ExportResponseGet.yaml
+    '404':
+      description: |
+        No result from Solr

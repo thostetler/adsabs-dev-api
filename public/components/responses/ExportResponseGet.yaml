@@ -1,0 +1,6 @@
+description: |
+  Returns export
+content:
+  application/json:
+    schema:
+      type: string

@@ -1,0 +1,100 @@
+get:
+  summary: View permissions of a library
+  parameters:
+    - name: library_id
+      description: Library ID
+      required: true
+      in: path
+      schema:
+        type: string
+  description: |
+    View permissions of a specific library.
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: List of all permissions for the user for the library
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: array
+                description: >
+                  Key is email of the user, item is a list of that user's
+                  permissions for the given library
+                items:
+                  type: string
+    '400':
+      description: |
+        No username passed, or bad library ID passed
+    '403':
+      description: |
+        User does not have permission to perform this operation
+post:
+  summary: Edit permission of a library
+  parameters:
+    - name: library_id
+      description: Library ID
+      required: true
+      in: path
+      schema:
+        type: string
+  description: |
+    Edit the permissions of a library
+
+    The following type of user can add or remove documents:
+    * owner
+    * admin
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing the email of the user whose permissions will be modified
+      and the permissions to be added or removed. User may not modify their own
+      permissions
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - email
+            - permission
+          properties:
+            email:
+              type: string
+              description: |
+                Email address of user whose permissions will be modified
+            permission:
+              type: object
+              description: |
+                Only required to include permissions that will be modified
+              properties:
+                read:
+                  type: boolean
+                write:
+                  type: boolean
+                admin:
+                  type: boolean
+  responses:
+    '200':
+      description: |
+        Returns empty object
+      content:
+        application/json:
+          schema:
+            type: object
+    '400':
+      description: |
+        No username passed, bad library ID passed, or wrong type passed
+    '403':
+      description: |
+        User does not have permission to perform this operation
+    '404':
+      description: |
+        User does not have an ADS account

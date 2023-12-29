@@ -1,0 +1,31 @@
+get:
+  summary: Summary information about a publication indexed by ADS
+  parameters:
+    - $ref: ../components/parameters/JournalBibstem.yaml
+  description: >
+    For a bibstem, return information about the publication, including the
+    official name and commonly-used variations, publisher and publisher history
+    (when available), and the ISSN and other identifiers when available.
+  tags:
+    - journals
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: >
+        JSON object containing `master`, `idents`, `abbrev`, `pubhist`, and
+        `names` objects, which contain summary information about the publication
+        (master), known alphanumeric identifiers (idents), known abbreviations
+        for the title (abbrev), historical information about the journal and its
+        publisher(s) when available (pubhist), and native-language and
+        transliterated names for journals having names in languages other than
+        English, when available (names).
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../components/schemas/summary.yaml
+    '403':
+      description: Authentication failure, unable to get results
+    '500':
+      description: Internal error, unable to get results

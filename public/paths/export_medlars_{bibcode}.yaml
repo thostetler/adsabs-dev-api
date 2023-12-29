@@ -1,0 +1,16 @@
+get:
+  summary: MEDLARS export for a single bibcode (GET)
+  parameters:
+    - $ref: ../components/parameters/bibcode.yaml
+  description: |
+    Export the given bibcode in the MEDLARS format
+  tags:
+    - export (tagged formats)
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      $ref: ../components/responses/ExportResponseGet.yaml
+    '404':
+      description: |
+        No result from Solr

@@ -1,0 +1,25 @@
+get:
+  summary: Retrieve information about a stored query
+  description: |
+    Retrive information about the previously stored query.
+
+    ## Example output
+
+    ```JSON
+    {
+        "numfound": 9,
+        "qid": "dcd173130bbbbb957eafd866baf38b2c",
+        "query": "{\"query\": \"fq=%7B%21bitset%7D&q=%2A%3A%2A\", \"bigquery\": \"bibcode\\n15ASPC..495..40015IAUGA..2257982A\\n2015IAUGA..2257768A\\n2015IAUGA..2257639R\\n2015ASPC..492..208G\\n2015ASPC..492..204F\\n2015ASPC..492..189A\\n2015ASPC..492..150T\\n2015ASPC..492...85E\\n2015ASPC..492...80H\\n2015AAS...22533656H\"}"
+    }
+    ```
+  parameters:
+    - $ref: ../components/parameters/queryId.yaml
+  tags:
+    - stored search
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      $ref: ../components/responses/VaultResponse.yaml
+    '404':
+      description: QID object not found

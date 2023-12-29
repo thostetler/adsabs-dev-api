@@ -1,0 +1,47 @@
+get:
+  summary: Resolve a reference string into a bibcode
+  description: >
+    Given a reference string (such as from the references section of a published
+    paper), returns the bibcode of the matching paper.
+  tags:
+    - reference
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - name: reference
+      description: URL-encoded reference string
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Kravchenko%20et%20al.%202020%2C%20A%26A%20637%2C%20L6
+  responses:
+    '200':
+      description: >
+        JSON containing the input reference, the matching bibcode, and the
+        confidence score
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resolved:
+                type: object
+                properties:
+                  bibcode:
+                    description: Output matching bibcode
+                    type: string
+                  refstring:
+                    description: Input reference string
+                    type: string
+                  score:
+                    description: Confidence score, ranging from 0 (low) to 1 (high)
+                    type: string
+                  comment:
+                    description: Error message if parsing fails
+                    type: string
+            example:
+              resolved:
+                refstring: Kravchenko et al. 2020, A&A 637, L6
+                score: '1.0'
+                bibcode: 2020A&A...637L...6K

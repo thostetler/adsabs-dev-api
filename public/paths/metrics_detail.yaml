@@ -1,0 +1,54 @@
+post:
+  summary: Retrieve detail-level metrics for one or more bibcodes
+  description: |
+    Provides basic, year-by-year metrics on a per-bibcode basis.
+  tags:
+    - metrics
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: JSON containing the bibcode(s) to produce metrics for.
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/bibcodesObject.yaml
+  responses:
+    '200':
+      description: JSON containing the requested metrics
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bibcode:
+                type: object
+                properties:
+                  citations:
+                    type: object
+                    properties:
+                      year:
+                        type: integer
+                  downloads:
+                    type: object
+                    properties:
+                      year:
+                        type: integer
+                  reads:
+                    type: object
+                    properties:
+                      year:
+                        type: integer
+                  ref_citations:
+                    type: object
+                    properties:
+                      year:
+                        type: integer
+              skipped bibcodes:
+                type: array
+                items:
+                  type: string
+    '403':
+      description: |
+        Unable to get results
+    '500':
+      description: Metrics request blew up

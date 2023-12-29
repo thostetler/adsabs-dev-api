@@ -1,0 +1,268 @@
+openapi: 3.0.3
+info:
+  title: API for Astrophysics Data System (ADS)
+  description: >
+    ## API for the NASA Astrophysics Data System
+
+
+    The source code for the project can be found at https://github.com/adsabs.
+
+
+    Individual components:
+
+    * Search: https://github.com/adsabs/solr-service
+
+    * Stored search: https://github.com/adsabs/vault
+
+    * Libraries: https://github.com/adsabs/biblib-service
+
+    * Export: https://github.com/adsabs/export_service
+
+    * Metrics: https://github.com/adsabs/metrics_service
+
+    * Author affiliation: https://github.com/adsabs/author_affiliation_service
+
+    * Citation helper: https://github.com/adsabs/citation_helper_service
+
+    * Classic import: https://github.com/adsabs/harbour-service
+
+    * Objects: https://github.com/adsabs/object_service
+
+    * Journals: https://github.com/adsabs/ADSJournalsDB
+
+    * Recommender: https://github.com/adsabs/oracle_service
+
+    * Reference: https://github.com/adsabs/reference_service
+
+    * Resolver: https://github.com/adsabs/resolver_service
+
+    * Notifications: https://github.com/adsabs/vault
+
+    * Visualizations: https://github.com/adsabs/vis-services
+
+
+    This documentation follows the [OpenAPI
+    specification](https://swagger.io/specification/).
+
+    The UI was created with
+    [RapiDoc](https://mrin9.github.io/RapiDoc/index.html).
+  termsOfService: https://ui.adsabs.harvard.edu/help/terms/
+  contact:
+    name: ADS Help
+    url: https://github.com/adsabs/adsabs-dev-api
+    email: adshelp@cfa.harvard.edu
+  version: 1.0.0
+servers:
+  - url: https://api.adsabs.harvard.edu/{basePath}
+    description: Production Server
+    variables:
+      basePath:
+        default: v1
+        enum:
+          - v1
+  - url: https://devapi.adsabs.harvard.edu/{basePath}
+    description: Development Server
+    variables:
+      basePath:
+        default: v1
+        enum:
+          - v1
+security:
+  - ApiKeySecurity: []
+tags:
+  - name: search
+  - name: stored search
+  - name: libraries
+  - name: export (tagged formats)
+  - name: export (LaTeX formats)
+  - name: export (XML formats)
+  - name: export (other)
+  - name: metrics
+  - name: author affiliation
+  - name: citation helper
+  - name: classic import
+  - name: objects
+  - name: journals
+  - name: recommender
+  - name: reference
+  - name: resolver
+  - name: notifications
+  - name: visualizations
+externalDocs:
+  description: Complete documentation describing how to use this API
+  url: https://github.com/adsabs/adsabs-dev-api
+paths:
+  /search/query:
+    $ref: paths/search_query.yaml
+  /search/qtree:
+    $ref: paths/search_qtree.yaml
+  /search/bigquery:
+    $ref: paths/search_bigquery.yaml
+  /vault/query:
+    $ref: paths/vault_query.yaml
+  /vault/query/{queryId}:
+    $ref: paths/vault_query_{queryId}.yaml
+  /vault/execute_query/{queryId}:
+    $ref: paths/vault_execute_query_{queryId}.yaml
+  /vault/query2svg/{queryId}:
+    $ref: paths/vault_query2svg_{queryId}.yaml
+  /biblib/libraries:
+    $ref: paths/biblib_libraries.yaml
+  /biblib/libraries/{library_id}:
+    $ref: paths/biblib_libraries_{library_id}.yaml
+  /biblib/libraries/operations/{library_id}:
+    $ref: paths/biblib_libraries_operations_{library_id}.yaml
+  /biblib/documents/{library_id}:
+    $ref: paths/biblib_documents_{library_id}.yaml
+  /biblib/query/{library_id}:
+    $ref: paths/biblib_query_{library_id}.yaml
+  /biblib/permissions/{library_id}:
+    $ref: paths/biblib_permissions_{library_id}.yaml
+  /biblib/transfer/{library_id}:
+    $ref: paths/biblib_transfer_{library_id}.yaml
+  /export/bibtexabs/{bibcode}:
+    $ref: paths/export_bibtexabs_{bibcode}.yaml
+  /export/bibtexabs:
+    $ref: paths/export_bibtexabs.yaml
+  /export/bibtex/{bibcode}:
+    $ref: paths/export_bibtex_{bibcode}.yaml
+  /export/bibtex:
+    $ref: paths/export_bibtex.yaml
+  /export/ads/{bibcode}:
+    $ref: paths/export_ads_{bibcode}.yaml
+  /export/ads:
+    $ref: paths/export_ads.yaml
+  /export/endnote/{bibcode}:
+    $ref: paths/export_endnote_{bibcode}.yaml
+  /export/endnote:
+    $ref: paths/export_endnote.yaml
+  /export/procite/{bibcode}:
+    $ref: paths/export_procite_{bibcode}.yaml
+  /export/procite:
+    $ref: paths/export_procite.yaml
+  /export/ris/{bibcode}:
+    $ref: paths/export_ris_{bibcode}.yaml
+  /export/ris:
+    $ref: paths/export_ris.yaml
+  /export/refworks/{bibcode}:
+    $ref: paths/export_refworks_{bibcode}.yaml
+  /export/refworks:
+    $ref: paths/export_refworks.yaml
+  /export/medlars/{bibcode}:
+    $ref: paths/export_medlars_{bibcode}.yaml
+  /export/medlars:
+    $ref: paths/export_medlars.yaml
+  /export/aastex/{bibcode}:
+    $ref: paths/export_aastex_{bibcode}.yaml
+  /export/aastex:
+    $ref: paths/export_aastex.yaml
+  /export/icarus/{bibcode}:
+    $ref: paths/export_icarus_{bibcode}.yaml
+  /export/icarus:
+    $ref: paths/export_icarus.yaml
+  /export/mnras/{bibcode}:
+    $ref: paths/export_mnras_{bibcode}.yaml
+  /export/mnras:
+    $ref: paths/export_mnras.yaml
+  /export/soph/{bibcode}:
+    $ref: paths/export_soph_{bibcode}.yaml
+  /export/soph:
+    $ref: paths/export_soph.yaml
+  /export/dcxml/{bibcode}:
+    $ref: paths/export_dcxml_{bibcode}.yaml
+  /export/dcxml:
+    $ref: paths/export_dcxml.yaml
+  /export/refxml/{bibcode}:
+    $ref: paths/export_refxml_{bibcode}.yaml
+  /export/refxml:
+    $ref: paths/export_refxml.yaml
+  /export/refabsxml/{bibcode}:
+    $ref: paths/export_refabsxml_{bibcode}.yaml
+  /export/refabsxml:
+    $ref: paths/export_refabsxml.yaml
+  /export/votable/{bibcode}:
+    $ref: paths/export_votable_{bibcode}.yaml
+  /export/votable:
+    $ref: paths/export_votable.yaml
+  /export/rss/{bibcode}:
+    $ref: paths/export_rss_{bibcode}.yaml
+  /export/rss:
+    $ref: paths/export_rss.yaml
+  /export/rss/{bibcode}/{link}:
+    $ref: paths/export_rss_{bibcode}_{link}.yaml
+  /export/ieee/{bibcode}:
+    $ref: paths/export_ieee_{bibcode}.yaml
+  /export/ieee:
+    $ref: paths/export_ieee.yaml
+  /export/csl:
+    $ref: paths/export_csl.yaml
+  /export/custom:
+    $ref: paths/export_custom.yaml
+  /metrics:
+    $ref: paths/metrics.yaml
+  /metrics/{bibcode}:
+    $ref: paths/metrics_{bibcode}.yaml
+  /metrics/detail:
+    $ref: paths/metrics_detail.yaml
+  /author-affiliation/search:
+    $ref: paths/author-affiliation_search.yaml
+  /author-affiliation/export:
+    $ref: paths/author-affiliation_export.yaml
+  /citation_helper:
+    $ref: paths/citation_helper.yaml
+  /harbour/mirrors:
+    $ref: paths/harbour_mirrors.yaml
+  /harbour/user:
+    $ref: paths/harbour_user.yaml
+  /harbour/auth/classic:
+    $ref: paths/harbour_auth_classic.yaml
+  /objects:
+    $ref: paths/objects.yaml
+  /objects/query:
+    $ref: paths/objects_query.yaml
+  /journals/summary/{bibstem}:
+    $ref: paths/journals_summary_{bibstem}.yaml
+  /journals/journal/{journalname}:
+    $ref: paths/journals_journal_{journalname}.yaml
+  /journals/holdings/{bibstem}/{volume}:
+    $ref: paths/journals_holdings_{bibstem}_{volume}.yaml
+  /journals/refsource/{bibstem}:
+    $ref: paths/journals_refsource_{bibstem}.yaml
+  /journals/issn/{issn}:
+    $ref: paths/journals_issn_{issn}.yaml
+  /oracle/matchdoc:
+    $ref: paths/oracle_matchdoc.yaml
+  /oracle/readhist:
+    $ref: paths/oracle_readhist.yaml
+  /oracle/readhist/{function}/{reader}:
+    $ref: paths/oracle_readhist_{function}_{reader}.yaml
+  /reference/text/{reference}:
+    $ref: paths/reference_text_{reference}.yaml
+  /reference/text:
+    $ref: paths/reference_text.yaml
+  /reference/xml:
+    $ref: paths/reference_xml.yaml
+  /reference/parse:
+    $ref: paths/reference_parse.yaml
+  /resolver/{bibcode}:
+    $ref: paths/resolver_{bibcode}.yaml
+  /resolver/{bibcode}/{link_type}:
+    $ref: paths/resolver_{bibcode}_{link_type}.yaml
+  /vault/notifications:
+    $ref: paths/vault_notifications.yaml
+  /vault/notifications/{myads_id}:
+    $ref: paths/vault_notifications_{myads_id}.yaml
+  /vault/notification_query/{myads_id}:
+    $ref: paths/vault_notification_query_{myads_id}.yaml
+  /vis/author-network:
+    $ref: paths/vis_author-network.yaml
+  /vis/paper-network:
+    $ref: paths/vis_paper-network.yaml
+  /vis/word-cloud:
+    $ref: paths/vis_word-cloud.yaml
+components:
+  securitySchemes:
+    ApiKeySecurity:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

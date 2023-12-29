@@ -1,0 +1,5 @@
+description: Abstract Syntax Tree of a Parsed query
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/qtree.yaml

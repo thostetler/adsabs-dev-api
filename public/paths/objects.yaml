@@ -1,0 +1,63 @@
+post:
+  summary: Return object identifers for a given string
+  description: >
+    For a given string, returns the object identifiers from either NED or
+    SIMBAD, whichever is specified
+  tags:
+    - objects
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing either a list of object names ("objects") or a list of
+      SIMBAD object identifiers ("identifiers")
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            source:
+              type: string
+              enum:
+                - simbad
+                - ned
+              example: SIMBAD
+            identifiers:
+              type: array
+              items:
+                type: string
+              example:
+                - '1575544'
+            objects:
+              type: array
+              items:
+                type: string
+              example:
+                - M31
+  responses:
+    '200':
+      description: >
+        JSON containing the input object or identifier as the key and the values
+        are the canonical names or identifiers. If the object or identifier was
+        not recognized, the value returned with be None.
+
+
+        Note: this service also returns a 200 even if an error was encountered;
+        be sure to read the returned error message carefully in that case.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              object or identifier:
+                type: object
+                properties:
+                  id:
+                    description: Integer or string, depending on input source
+                    type: string
+                  canonical:
+                    type: string
+            example:
+              '1575544':
+                id: '1575544'
+                canonical: M  31

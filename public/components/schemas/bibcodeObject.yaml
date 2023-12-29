@@ -1,0 +1,10 @@
+type: object
+required:
+  - bibcode
+properties:
+  bibcode:
+    type: array
+    description: |
+      Input list of one or more bibcodes
+    items:
+      type: string

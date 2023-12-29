@@ -1,0 +1,48 @@
+post:
+  summary: Sign into ADS Classic account
+  description: |
+    Sign into ADS Classic account and link it to your main ADS account
+  tags:
+    - classic import
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: JSON containing the user's Classic ADS authentication
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - classic_email
+            - classic_mirror
+            - classic_password
+          properties:
+            classic_email:
+              type: string
+            classic_mirror:
+              type: string
+            classic_password:
+              type: string
+  responses:
+    '200':
+      description: |
+        JSON containing user's stored Classic information.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              classic_email:
+                type: string
+              classic_mirror:
+                type: string
+              classic_authed:
+                type: boolean
+    '400':
+      description: Malformed payload; see error message for details
+    '404':
+      description: Classic authentication failed
+    '500':
+      description: Classic did not return a cookie
+    '504':
+      description: Classic timeout

@@ -1,0 +1,22 @@
+type: object
+properties:
+  q:
+    $ref: ./q.yaml
+  fl:
+    $ref: ./fl.yaml
+  start:
+    $ref: ./start.yaml
+  rows:
+    $ref: ./rows.yaml
+  sort:
+    $ref: ./sort.yaml
+  fq:
+    type: string
+    description: |
+      must be set to `'{!bitset}'`
+  bigquery:
+    type: string
+    description: >
+      new line separated list of bibcodes, the first line is the name of the
+      index that will be searched, right now we only support search in `bibcode`
+      index

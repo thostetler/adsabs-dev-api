@@ -1,0 +1,11 @@
+type: object
+properties:
+  journal:
+    type: array
+    items:
+      type: object
+      properties:
+        bibstem:
+          type: string
+        name:
+          type: string

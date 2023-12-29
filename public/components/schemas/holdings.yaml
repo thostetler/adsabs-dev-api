@@ -1,0 +1,18 @@
+type: object
+properties:
+  bibstem:
+    type: string
+  volume:
+    type: string
+  numFound:
+    type: integer
+  holdings:
+    type: array
+    items:
+      properties:
+        esources:
+          type: array
+          items:
+            type: string
+        page:
+          type: string

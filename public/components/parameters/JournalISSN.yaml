@@ -1,0 +1,7 @@
+name: issn
+description: Search string
+required: true
+in: path
+example: 0004-637X
+schema:
+  type: string

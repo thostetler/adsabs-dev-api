@@ -1,0 +1,7 @@
+name: journalname
+description: Search string
+required: true
+in: path
+example: Astro%20Jour
+schema:
+  type: string

@@ -1,0 +1,32 @@
+get:
+  summary: Return a constructed myADS query
+  description: >
+    Given a myADS ID for a single notification setup, use the inputed data to
+    build the full query(ies), ready for execution.
+  tags:
+    - notifications
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - $ref: ../components/parameters/myadsId.yaml
+  responses:
+    '200':
+      description: >
+        Constructed query and sort parameter. For the keyword and arxiv
+        template-type queries, more than one query and sort parameter will be
+        returned.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                q:
+                  type: string
+                sort:
+                  type: string
+    '400':
+      description: Malformed request
+    '404':
+      description: Notification not found

@@ -1,0 +1,41 @@
+get:
+  summary: Return recommendations for the given user
+  description: >
+    Returns paper recommendations for the given user, based on their reading
+    history.
+  tags:
+    - recommender
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - name: function
+      description: >
+        Second-order operator used to generate recommendations; most common is
+        'similar'
+      required: true
+      in: path
+      schema:
+        type: string
+    - name: reader
+      description: |
+        Internal ID specifying the user to generate recommendations for
+      required: true
+      in: path
+      schema:
+        type: string
+  responses:
+    '200':
+      description: >
+        JSON containing the returned recommendations and the query used to
+        generate them
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bibcodes:
+                type: string
+              query:
+                type: string
+    '400':
+      description: Reader was not provided

@@ -1,0 +1,95 @@
+get:
+  summary: View the details for one myADS notification
+  description: >
+    View the details for one myADS notification set up for the current user,
+    associated with the given API token
+  tags:
+    - notifications
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - $ref: ../components/parameters/myadsId.yaml
+  responses:
+    '200':
+      description: Details of none otification set up for the current user
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../components/schemas/myADSsummaryResponse.yaml
+              - $ref: ../components/schemas/myADSdetailResponse.yaml
+    '400':
+      description: Malformed request
+    '404':
+      description: Notification not found
+put:
+  summary: Edit the details for one myADS notification
+  description: >
+    Edit the details for one myADS notification set up for the current user,
+    associated with the given API token
+  tags:
+    - notifications
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - $ref: ../components/parameters/myadsId.yaml
+  requestBody:
+    description: |
+      JSON containing metadata of notification to edit.
+
+      Note: only need to include information that needs to be changed.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            data:
+              type: string
+            name:
+              type: string
+            classes:
+              type: array
+              items:
+                type: string
+            active:
+              type: boolean
+            stateful:
+              type: boolean
+            frequency:
+              type: string
+              enum:
+                - daily
+                - weekly
+  responses:
+    '200':
+      description: Details of none otification set up for the current user
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../components/schemas/myADSsummaryResponse.yaml
+              - $ref: ../components/schemas/myADSdetailResponse.yaml
+    '400':
+      description: Malformed request
+    '404':
+      description: Notification not found
+    '500':
+      description: User does not exist or other error
+delete:
+  summary: Delete one myADS notification
+  description: >
+    Delete one myADS notification set up for the current user, associated with
+    the given API token
+  tags:
+    - notifications
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - $ref: ../components/parameters/myadsId.yaml
+  responses:
+    '204':
+      description: Successfully deleted the notification
+    '404':
+      description: Notification not found
+    '500':
+      description: Error during request

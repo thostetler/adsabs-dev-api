@@ -1,0 +1,11 @@
+description: |
+  Returns export
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        msg:
+          type: string
+        export:
+          type: string

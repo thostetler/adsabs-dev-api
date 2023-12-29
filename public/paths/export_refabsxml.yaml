@@ -1,0 +1,16 @@
+post:
+  summary: REFABS-XML export for multiple bibcodes (POST)
+  description: |
+    Export the given bibcodes in the REFABS-XML format
+  tags:
+    - export (XML formats)
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    $ref: ../components/requestBodies/exportBody.yaml
+  responses:
+    '200':
+      $ref: ../components/responses/ExportResponse.yaml
+    '404':
+      description: |
+        No result from Solr

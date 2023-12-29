@@ -1,0 +1,175 @@
+type: object
+properties:
+  basic stats:
+    type: object
+    properties:
+      average number of downloads:
+        type: number
+      average number of reads:
+        type: number
+      median number of downloads:
+        type: number
+      median number of reads:
+        type: number
+      normalized paper count:
+        type: number
+      number of papers:
+        type: integer
+      recent number of downloads:
+        type: integer
+      recent number of reads:
+        type: integer
+      total number of downloads:
+        type: integer
+      total number of reads:
+        type: integer
+  basic stats refereed:
+    type: object
+    properties:
+      average number of downloads:
+        type: number
+      average number of reads:
+        type: number
+      median number of downloads:
+        type: number
+      median number of reads:
+        type: number
+      normalized paper count:
+        type: number
+      number of papers:
+        type: integer
+      recent number of downloads:
+        type: integer
+      recent number of reads:
+        type: integer
+      total number of downloads:
+        type: integer
+      total number of reads:
+        type: integer
+  citation stats:
+    type: object
+    properties:
+      average number of citations:
+        type: number
+      average number of refereed citations:
+        type: number
+      median number of citations:
+        type: number
+      median number of refereed citations:
+        type: number
+      normalized number of citations:
+        type: number
+      normalized number of refereed citations:
+        type: number
+      number of citing papers:
+        type: integer
+      number of self-citations:
+        type: integer
+      self-citations:
+        type: array
+        items:
+          type: string
+      total number of citations:
+        type: integer
+      total number of refereed citations:
+        type: integer
+  citation stats refereed:
+    type: object
+    properties:
+      average number of citations:
+        type: number
+      average number of refereed citations:
+        type: number
+      median number of citations:
+        type: number
+      median number of refereed citations:
+        type: number
+      normalized number of citations:
+        type: number
+      normalized number of refereed citations:
+        type: number
+      number of citing papers:
+        type: integer
+      number of self-citations:
+        type: integer
+      self-citations:
+        type: array
+        items:
+          type: string
+      total number of citations:
+        type: integer
+      total number of refereed citations:
+        type: integer
+  histograms:
+    type: object
+    properties:
+      citations:
+        type: object
+        properties:
+          nonrefereed to nonrefereed:
+            type: object
+            properties:
+              year:
+                type: integer
+          nonrefereed to nonrefereed normalized:
+            type: object
+            properties:
+              year:
+                type: number
+          nonrefereed to refereed:
+            type: object
+            properties:
+              year:
+                type: integer
+          nonrefereed to refereed normalized:
+            type: object
+            properties:
+              year:
+                type: number
+          refereed to nonrefereed:
+            type: object
+            properties:
+              year:
+                type: integer
+          refereed to nonrefereed normalized:
+            type: object
+            properties:
+              year:
+                type: number
+          refereed to refereed:
+            type: object
+            properties:
+              year:
+                type: integer
+          refereed to refereed normalized:
+            type: object
+            properties:
+              year:
+                type: number
+      reads:
+        type: object
+        properties:
+          all reads:
+            type: object
+            properties:
+              year:
+                type: integer
+          all reads normalized:
+            type: object
+            properties:
+              year:
+                type: number
+          refereed reads:
+            type: object
+            properties:
+              year:
+                type: integer
+          refereed reads normalized:
+            type: object
+            properties:
+              year:
+                type: number
+  skipped bibcodes:
+    type: array
+    items:
+      type: string

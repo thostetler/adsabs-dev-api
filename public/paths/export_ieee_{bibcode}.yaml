@@ -1,0 +1,16 @@
+get:
+  summary: IEEE export (Unicode-encoded) for a single bibcode (GET)
+  parameters:
+    - $ref: ../components/parameters/bibcode.yaml
+  description: |
+    Export the given bibcode in the IEEE format
+  tags:
+    - export (other)
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      $ref: ../components/responses/ExportResponseGet.yaml
+    '404':
+      description: |
+        No result from Solr

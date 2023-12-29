@@ -1,0 +1,52 @@
+post:
+  summary: CSL export for one or more bibcodes (POST)
+  description: |
+    Export the given bibcodes in the given style and format
+  tags:
+    - export (other)
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing the bibcodes to export, and the style and format to export
+      them in.
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: ../components/schemas/bibcodeObject.yaml
+            - type: object
+              required:
+                - style
+                - format
+              properties:
+                style:
+                  description: Journal style to use
+                  type: string
+                  enum:
+                    - aastex
+                    - icarus
+                    - mnras
+                    - soph
+                    - aspc
+                    - apsj
+                    - aasj
+                    - ieee
+                format:
+                  description: Output format; use 1 for Unicode, 2 for HTML, or 3 for LaTeX
+                  type: integer
+                journalformat:
+                  description: >
+                    Format of journal name; used only for aastex, aspc, and aasj
+                    styles. Use 1 for AASTeX macros (default), 2 for journal
+                    abbreviations, or 3 for full journal name.
+                  type: integer
+                sort:
+                  description: Sort order for export
+                  type: string
+  responses:
+    '200':
+      $ref: ../components/responses/ExportResponse.yaml
+    '404':
+      description: |
+        No result from Solr

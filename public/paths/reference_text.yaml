@@ -1,0 +1,60 @@
+post:
+  summary: Resolve one or more reference strings into a bibcode
+  description: >
+    Given one or more reference strings (such as from the references section of
+    a published paper), returns the bibcode(s) of the matching paper(s).
+    Multiple references should be passed as individual strings in a
+    comma-delimited list.
+  tags:
+    - reference
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the input reference strings
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - reference
+          properties:
+            reference:
+              type: array
+              items:
+                type: string
+          example:
+            reference:
+              - Kravchenko et al. 2020, A&A 637, L6
+              - Blandford, R. D., & Znajek, R. L. 1977, MNRAS, 179, 433
+  responses:
+    '200':
+      description: >
+        JSON containing the input reference, the matching bibcode, and the
+        confidence score
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resolved:
+                type: object
+                properties:
+                  bibcode:
+                    description: Output matching bibcode
+                    type: string
+                  refstring:
+                    description: Input reference string
+                    type: string
+                  score:
+                    description: Confidence score, ranging from 0 (low) to 1 (high)
+                    type: string
+                  comment:
+                    description: Error message if parsing fails
+                    type: string
+            example:
+              refstring: Kravchenko et al. 2020, A&A 637, L6
+              score: '1.0'
+              bibcode: 2020A&A...637L...6K
+    '400':
+      description: Bad request, check payload

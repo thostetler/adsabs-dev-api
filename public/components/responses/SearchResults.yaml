@@ -1,0 +1,5 @@
+description: Results returned by the search engine
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/results.yaml

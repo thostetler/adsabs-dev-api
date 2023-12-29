@@ -1,0 +1,123 @@
+get:
+  summary: View all libraries for a given user
+  parameters:
+    - name: start
+      description: start index for response
+      required: false
+      in: query
+      schema:
+        type: integer
+        default: 0
+    - name: rows
+      description: number of libraries to return
+      required: false
+      in: query
+      schema:
+        type: integer
+        default: None
+    - name: sort
+      description: key to sort the libraries by
+      required: false
+      in: query
+      schema:
+        type: string
+        enum:
+          - date_created
+          - date_last_modified
+        default: date_created
+    - name: order
+      description: order to sort the libraries in
+      required: false
+      in: query
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: asc
+  description: |
+    View all libraries for the user associated with the given API token.
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: Metadata for all libraries for a given user
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              libraries:
+                type: array
+                items:
+                  $ref: ../components/schemas/libraryMetadata.yaml
+    '400':
+      description: |
+        No username passed
+post:
+  summary: Create a new library
+  description: >
+    Create a library for the requesting user. Returns the metadata of the
+    library created.
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the metadata and bibcodes of the library to be created.
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: >
+                (optional) name of the library (must be unique for that user).
+                The default is Untitled Library, with an incremented integer
+                starting with 1 appended.
+            description:
+              type: string
+              description: >
+                (optional) description of the library. The default is "My ADS
+                library"
+            public:
+              type: boolean
+              default: false
+              description: >
+                (optional) set to true to allow public access. The default is
+                false, or a private library
+            bibcode:
+              type: array
+              description: >
+                (optional) list of bibcodes to add. The default is an empty
+                library
+              items:
+                type: string
+  responses:
+    '200':
+      description: |
+        Metadata of the library just created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              id:
+                type: string
+              description:
+                type: string
+              bibcode:
+                type: array
+                items:
+                  type: string
+    '400':
+      description: |
+        No username passed, or wrong type passed
+    '409':
+      description: Duplicate library name exists

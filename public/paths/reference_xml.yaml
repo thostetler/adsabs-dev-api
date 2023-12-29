@@ -1,0 +1,90 @@
+post:
+  summary: Resolve one or more parsed references into a bibcode
+  description: >
+    Given one or more parsed reference strings, returns the bibcode of the
+    matching paper.
+  tags:
+    - reference
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the parsed input references.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - parsed_reference
+          properties:
+            parsed_reference:
+              type: array
+              items:
+                type: string
+                description: >
+                  Parsed references, passed as serialized JSON. The following
+                  keywords are accepted (note that each value should be
+                  formatted as a string):
+
+                  * authors (value is formatted as "Last1, First1, Last2,
+                  First2")
+
+                  * journal
+
+                  * title
+
+                  * volume
+
+                  * issue
+
+                  * page
+
+                  * year
+
+                  * doi
+
+                  * arxiv
+
+                  * refstr (used for output only)
+
+                  * issn
+
+                  * refplaintext (if the parsed input fails, this is used for
+                  parsing)
+              example:
+                - >-
+                  {'authors': 'Baumjohann, W., Haerendel, G.H.', 'journal':
+                  'Geophysical Monograph', 'title': 'Physics of Magnetic Flux
+                  Ropes', 'volume': '58', 'page': '627', 'year': '1990',
+                  'refstr': 'Baumjohann, W., Haerendel, G.H., 1990. Geophysical
+                  Monograph, Physics of Magnetic Flux Ropes, 58, 627.',
+                  'refplaintext': 'Baumjohann, W., Haerendel, G.H., 1990.
+                  Geophysical Monograph, Physics of Magnetic Flux Ropes, 58,
+                  627.'}
+  responses:
+    '200':
+      description: >
+        JSON containing the input reference, the matching bibcode, and the
+        confidence score
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              resolved:
+                type: object
+                properties:
+                  bibcode:
+                    description: Output matching bibcode
+                    type: string
+                  refstring:
+                    description: Input reference string
+                    type: string
+                  score:
+                    description: Confidence score, ranging from 0 (low) to 1 (high)
+                    type: string
+                  comment:
+                    description: Error message if parsing fails
+                    type: string
+    '400':
+      description: Bad request, check payload

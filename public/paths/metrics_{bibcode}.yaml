@@ -1,0 +1,30 @@
+get:
+  summary: Retrieve metrics for one bibcode
+  description: >
+    Similar to the `/metrics` endpoint, but returns data for a single bibcode
+    only. Does not return indicators or timeseries.
+  parameters:
+    - name: bibcode
+      description: Bibcode to return metrics for
+      required: true
+      in: path
+      schema:
+        type: string
+  tags:
+    - metrics
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: |
+        JSON containing the requested metrics
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../components/schemas/basicMetricsResponse.yaml
+    '403':
+      description: |
+        Unable to get results
+    '500':
+      description: Metrics request blew up

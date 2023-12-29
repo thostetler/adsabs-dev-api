@@ -1,0 +1,6 @@
+description: |
+  JSON containing the bibcodes to export
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/bibcodeObject.yaml

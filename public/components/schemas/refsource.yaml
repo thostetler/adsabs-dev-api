@@ -1,0 +1,30 @@
+type: object
+properties:
+  refsource:
+    type: object
+    properties:
+      bibstem:
+        type: string
+      volumes:
+        type: array
+        items:
+          properties:
+            volume:
+              type: string
+            year:
+              type: string
+            refsources:
+              type: object
+              properties:
+                AUTHOR:
+                  type: integer
+                OTHER:
+                  type: integer
+                ISI:
+                  type: integer
+                CROSSREF:
+                  type: integer
+                OCR:
+                  type: integer
+                PUBLISHER:
+                  type: integer

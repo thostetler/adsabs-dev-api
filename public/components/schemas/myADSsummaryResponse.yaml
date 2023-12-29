@@ -1,0 +1,31 @@
+type: object
+properties:
+  active:
+    type: boolean
+  created:
+    type: string
+  data:
+    type: string
+  frequency:
+    type: string
+    enum:
+      - daily
+      - weekly
+  id:
+    type: integer
+  name:
+    type: string
+  template:
+    type: string
+    enum:
+      - arxiv
+      - authors
+      - citations
+      - keyword
+  type:
+    type: string
+    enum:
+      - template
+      - query
+  updated:
+    type: string

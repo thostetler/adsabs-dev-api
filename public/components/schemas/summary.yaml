@@ -1,0 +1,73 @@
+type: object
+properties:
+  master:
+    type: object
+    properties:
+      bibstem:
+        type: string
+      journal_name:
+        type: string
+      primary_language:
+        type: string
+      multilingual:
+        type: boolean
+      defunct:
+        type: boolean
+      pubtype:
+        type: string
+      refereed:
+        type: string
+      collection:
+        type: string
+      notes:
+        type: string
+      not_indexed:
+        type: boolean
+  idents:
+    type: array
+    items:
+      type: object
+      properties:
+        id_type:
+          type: string
+        id_value:
+          type: string
+  abbrev:
+    type: array
+    items:
+      type: string
+  pubhist:
+    type: array
+    items:
+      type: object
+      properties:
+        publisher:
+          type: string
+        title:
+          type: object
+          properties:
+            year_start:
+              type: integer
+            year_end:
+              type: integer
+            vol_start:
+              type: string
+            vol_end:
+              type: string
+            complete:
+              type: string
+            successor_masterid:
+              type: integer
+            notes:
+              type: string
+  names:
+    type: object
+    properties:
+      name_english_translated:
+        type: string
+      title_language:
+        type: string
+      name_native_language:
+        type: string
+      name_normalized:
+        type: string

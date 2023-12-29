@@ -1,0 +1,45 @@
+get:
+  summary: (advanced) Search ADS and return a query tree object
+  description: >
+    Returns a `query tree` (Abstract Syntax Tree - AST) as understood by our
+    query parser. The structure can be used by external applications to rewrite
+    the query or check its syntactic correctness.
+
+
+    ## Example result
+
+    ```JSON
+
+    {
+         "qtree": "\n{\"name\":\"OPERATOR\", \"label\":\"DEFOP\", \"children\": [\n    {\"name\":\"MODIFIER\", \"label\":\"MODIFIER\", \"children\": [\n        {\"name\":\"TMODIFIER\", \"label\":\"TMODIFIER\", \"children\": [\n            {\"name\":\"FIELD\", \"label\":\"FIELD\", \"children\": [\n                {\"name\":\"QNORMAL\", \"label\":\"QNORMAL\", \"children\": [\n                    {\"name\":\"TERM_NORMAL\", \"input\":\"star\", \"start\":0, \"end\":3}]\n                }]\n            }]\n        }]\n    }]\n}",
+         "responseHeader": {
+          "status": 0,
+          "QTime": 6,
+          "params": {
+           "q": "star",
+           "wt": "json",
+           "fl": "id"
+          }
+         }
+        }
+    ```
+  parameters:
+    - $ref: ../components/parameters/q.yaml
+    - $ref: ../components/parameters/fq.yaml
+    - $ref: ../components/parameters/fl.yaml
+    - $ref: ../components/parameters/start.yaml
+    - $ref: ../components/parameters/rows.yaml
+    - $ref: ../components/parameters/sort.yaml
+  responses:
+    '200':
+      $ref: ../components/responses/QTree.yaml
+    '400':
+      description: Malformed request
+    '404':
+      description: Resource not found
+    '499':
+      description: Server too busy
+    '500':
+      description: Server error
+  tags:
+    - search

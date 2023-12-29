@@ -1,0 +1,32 @@
+type: object
+properties:
+  owner:
+    type: string
+    description: User who created the library
+  num_documents:
+    type: integer
+    description: Number of bibcodes in the library
+  public:
+    type: boolean
+    description: True means it is public
+  num_users:
+    type: integer
+    description: Number of users with permissions to this library
+  date_created:
+    type: string
+    description: Date library was created
+  name:
+    type: string
+    description: Name of library
+  description:
+    type: string
+    description: Description of library
+  permission:
+    type: string
+    description: Permission type, can be 'read', 'write', 'admin', or 'owner'
+  id:
+    type: string
+    description: Library ID
+  date_last_modified:
+    type: string
+    description: Date library was last modified

@@ -1,0 +1,24 @@
+description: Response from vault storage service
+content:
+  application/json:
+    schema:
+      type: object
+      properties:
+        numfound:
+          readOnly: true
+          type: integer
+          description: >
+            Number of docs this query found (the last time it was executed; this
+            number is up to date only when the query is stored). But if you see
+            number higher than 0 then you can be sure that the query was
+            executed.
+        qid:
+          readOnly: true
+          type: string
+          description: >
+            Query ID (unique hash identifying all the parameters; it is computed
+            from the supplied query parameters)
+        query:
+          type: string
+          description: |
+            Serialized JSON input search parameters

@@ -1,0 +1,31 @@
+get:
+  summary: |
+    Indexed journals that match a user-supplied search string
+  description: >
+    For a user-supplied search string, return a list of publication titles and
+    their accompanying bibstems, if the search string matches one of the title's
+    official name, translated or transliterated names, or a known alternate
+    title or abbreviation.  Spaces ("%20" in URL-encoded format) are treated as
+    substring terminators, such that the returned result of a search for
+    `Astro%20Jour` would include both `Astronomical Journal` and `Astrophysical
+    Journal`.
+  parameters:
+    - $ref: ../components/parameters/JournalJournalName.yaml
+  tags:
+    - journals
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: >
+        JSON list of possible matches containing both bibstem and the
+        publication's formal name of record.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../components/schemas/journal.yaml
+    '403':
+      description: Authentication failure, unable to get results
+    '500':
+      description: Internal error, unable to get results

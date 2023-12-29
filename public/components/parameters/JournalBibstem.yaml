@@ -1,0 +1,8 @@
+name: bibstem
+description: |
+  (Case-sensitive) ADS identifier for a publication, used to create bibcodes
+in: path
+example: ApJS
+required: true
+schema:
+  type: string

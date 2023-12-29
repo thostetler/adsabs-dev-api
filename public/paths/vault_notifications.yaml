@@ -1,0 +1,136 @@
+get:
+  summary: View all myADS notifications set up for the current user
+  description: >
+    View all myADS notifications set up for the current user, associated with
+    the given API token
+  tags:
+    - notifications
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      description: Details of notifications set up for the current user
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/myADSsummaryResponse.yaml
+    '400':
+      description: Malformed request
+    '404':
+      description: No notifications found for the given user
+post:
+  summary: Create a myADS notification
+  description: |
+    Create a myADS notification for the current user
+  tags:
+    - notifications
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing the notifications setup. There are two types of
+      notifications:
+
+
+      * template-type notifications: Notify the user about new papers that match
+      a templated query. The following keywords are required:
+
+        * template: The template to use to construct the query. The options are:
+
+          * arxiv: Meant for daily frequency; notifies of new arXiv papers. Requires the data and classes keywords:
+
+            * classes: (required) Array of arXiv categories and sub-categories to include in notifications
+
+            * data: (optional) Formatted search terms to search for within designated classes. If included,
+              notifications will include all papers that match the given categories, and papers that match
+              the search terms in this data keyword will be highlighted.
+
+          * authors: Meant for weekly frequency; notify the user of up to 5 new papers about given authors.
+          Requires the data keyword:
+
+            * data: (required) Must be formatted as `author:\"Last, First\"` or `orcid:\"ORCID-ID\"`. Can
+            combine multiple author queries using `OR`
+
+          * citations: Meant for weekly frequency; notify the user of new citations to papers by a given author.
+          Requires the data keyword:
+
+            * data: (required) Must be formatted as `author:\"Last, First\"` or `orcid:\"ORCID-ID\"`
+
+          * keyword: Meant for weekly frequency; notify the user of new papers matching a given set of
+          keywords. Three queries are constructed for the given set of search terms: recent papers,
+          trending papers, and useful papers. Requires the data keyword:
+
+            * data: (required) Formatted search terms or keywords
+
+      * query-type notifications: These notify the user about new papers that
+      match a given query. The following keywords are required:
+
+        * name: Name to call the notification
+
+        * qid: Query ID returned from the `/vault/query` endpoint, pointing to the stored query
+
+        * frequency: Daily or weekly notification frequency
+
+        * stateful: Set to true to only be notified of new papers; set to false to be notified of
+        the top matches to a query, whether or not you've seen them before
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - template
+                - query
+            name:
+              description: Optional for type=template; required for type=query
+              type: string
+            qid:
+              description: Only used for type=query
+              type: string
+            active:
+              description: Set to true to receive this notification
+              type: boolean
+            stateful:
+              description: Only used for type=query
+              type: boolean
+            frequency:
+              type: string
+              enum:
+                - daily
+                - weekly
+            template:
+              description: Only used for type=template
+              type: string
+              enum:
+                - arxiv
+                - authors
+                - citations
+                - keyword
+            classes:
+              description: Only used for type=template and template=arxiv
+              type: array
+              items:
+                type: string
+            data:
+              type: string
+  responses:
+    '200':
+      description: Returns notification setup details
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: ../components/schemas/myADSsummaryResponse.yaml
+              - $ref: ../components/schemas/myADSdetailResponse.yaml
+    '400':
+      description: Malformed request
+    '404':
+      description: Query associated with give QID does not exist
+    '500':
+      description: User does not exist or other error

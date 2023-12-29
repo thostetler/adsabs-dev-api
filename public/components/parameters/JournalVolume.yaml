@@ -1,0 +1,6 @@
+name: volume
+description: publication volume
+in: path
+required: true
+schema:
+  type: string

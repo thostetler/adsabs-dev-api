@@ -1,0 +1,23 @@
+get:
+  summary: Return links to external resources for a given bibcode
+  description: >
+    Return links to external resources, such as a publisher's full text, data
+    links, etc., for a given bibcode
+  tags:
+    - resolver
+  security:
+    - ApiKeySecurity: []
+  parameters:
+    - name: bibcode
+      description: Bibcode to return resources for
+      required: true
+      in: path
+      schema:
+        type: string
+  responses:
+    '200':
+      $ref: ../components/responses/ResolverResponse.yaml
+    '400':
+      description: Malformed request
+    '404':
+      description: Did not find any matching records

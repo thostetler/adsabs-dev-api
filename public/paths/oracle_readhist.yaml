@@ -1,0 +1,68 @@
+post:
+  summary: Return recommendations for the current user
+  description: >
+    Returns paper recommendations for the given user, based on their reading
+    history.
+  tags:
+    - recommender
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: |
+      JSON containing the input data for the recommender service
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - function
+          properties:
+            function:
+              description: >
+                Second-order operator used to generate recommendations; default
+                is 'similar'
+              type: string
+              enum:
+                - similar
+                - trending
+                - reviews
+                - useful
+            sort:
+              description: |
+                Sort order for recommendation query
+              type: string
+            num_docs:
+              description: |
+                Number of recommendations to return
+              type: integer
+            top_n_reads:
+              description: |
+                Number of input records to use in generating recomendations
+              type: integer
+            cutoff_days:
+              description: >
+                Number of days back to generate recommendations; returned
+                recommendations will have been entered into our database between
+                now and N days ago, where N is the entered cutoff_days
+              type: integer
+            reader:
+              description: >
+                Internal ID specifying the user; if not included, user will be
+                determined via the API token used
+              type: string
+  responses:
+    '200':
+      description: >
+        JSON containing the returned recommendations and the query used to
+        generate them
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bibcodes:
+                type: string
+              query:
+                type: string
+    '400':
+      description: No payload provided, or payload is missing needed parameters

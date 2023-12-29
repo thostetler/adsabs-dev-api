@@ -1,0 +1,50 @@
+post:
+  summary: Transfer ownership of a library
+  parameters:
+    - name: library_id
+      description: Library ID
+      required: true
+      in: path
+      schema:
+        type: string
+  description: |
+    Transfer ownership of a library from one user to another
+
+    The following type of user can add or remove documents:
+    * owner
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing the email of the user that library ownership will be
+      transferred to
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - email
+          properties:
+            email:
+              type: string
+              description: |
+                Email address of user who ownership will be transferred to
+  responses:
+    '200':
+      description: |
+        Returns empty object
+      content:
+        application/json:
+          schema:
+            type: object
+    '400':
+      description: |
+        No username passed, bad library ID passed, or wrong type passed
+    '403':
+      description: |
+        User does not have permission to perform this operation
+    '404':
+      description: |
+        User does not have an ADS account

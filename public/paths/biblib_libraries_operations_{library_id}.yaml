@@ -1,0 +1,209 @@
+post:
+  summary: Perform set operations on one or more libraries
+  parameters:
+    - name: library_id
+      description: Library ID for the primary library
+      required: true
+      in: path
+      schema:
+        type: string
+  description: >
+    Perform set operations on one or more libraries. The library_id (string) is
+    the unique identifier of the primary library, as specified in the /libraries
+    GET response. Depending on the operation, a secondary library ID may need to
+    be passed in the post payload.
+
+    ## Examples
+
+    **Union**: take the union of 3 libraries, using the default description and
+    public settings
+
+    ``` bash
+      $ curl -H "Authorization: Bearer $token" -H "Content-Type: application/json" \
+        https://api.adsabs.harvard.edu/v1/biblib/libraries/operations/iRZhyhvaSWe0uWwcXKt77w \
+        -X POST \
+        -d '{"action": "union", "libraries": ["rdRs4g4AQ522k9TJ2umtVA", "s56fjycaRMKxw6tDEr31XQ"], "name": "New union library"}'
+    ```
+
+
+    *Response*:
+
+
+    `{"id": "BeUbSWXtTPCaRhRV3nec_w", "bibcode": ["2009A&A...502..515G",
+    "2011ApJ...734...87R", "2010ApJ...710..248C", "2003ApJ...595..665X",
+    "2011ApJ...731L..12S", "2010ApJ...721..505R", "2010ApJ...710L.156R",
+    "2010ApJ...723.1255R", "2006ApJ...639L..51A", "2001AJ....122.2993S",
+    "2010ASPC..423..355R", "2010A&A...518A..59G", "2010ApJ...721L..48K"],
+    "description": "Union of 891661ca-1bda-4967-b4b9-6c1c5cab7bef with
+    [u'rdRs4g4AQ522k9TJ2umtVA', u's56fjycaRMKxw6tDEr31XQ']", "name": "New union
+    library"}`
+
+
+    **Intersection**: take the intersection of 2 libraries, using the default
+    public settings
+
+    ``` bash
+      $ curl -H "Authorization: Bearer $token" -H "Content-Type: application/json" \
+        https://api.adsabs.harvard.edu/v1/biblib/libraries/operations/BeUbSWXtTPCaRhRV3nec_w \
+        -X POST \
+        -d '{"action": "intersection", "libraries": ["rdRs4g4AQ522k9TJ2umtVA"], "name": "New intersection library", "description": "Sample intersection library"}'
+    ```
+
+
+    *Response*:
+
+
+    `{"id": "8V8DzNqyQuOyTX6RF9x7qQ", "bibcode": ["2001AJ....122.2993S",
+    "2009A&A...502..515G", "2006ApJ...639L..51A", "2010ApJ...710..248C",
+    "2003ApJ...595..665X", "2010A&A...518A..59G", "2011ApJ...731L..12S"],
+    "description": "Sample intersection library", "name": "New intersection
+    library"}`
+
+
+    **Difference**: take the difference of 2 libraries
+
+    ``` bash
+      $ curl -H "Authorization: Bearer $token" -H "Content-Type: application/json" \
+        https://api.adsabs.harvard.edu/v1/biblib/libraries/operations/BeUbSWXtTPCaRhRV3nec_w \
+        -X POST \
+        -d '{"action": "difference", "libraries": ["rdRs4g4AQ522k9TJ2umtVA"], "name": "New difference library", "description": "Sample difference library", "public": true}'
+    ```
+
+
+    *Response*:
+
+
+    `{"id": "9KBh8sVHQxaVkoPALtoXgg", "bibcode": ["2011ApJ...734...87R",
+    "2010ApJ...723.1255R", "2010ApJ...710L.156R", "2010ASPC..423..355R",
+    "2010ApJ...721L..48K", "2010ApJ...721..505R"], "description": "Sample
+    difference library", "name": "New difference library"}`
+
+
+    **Empty**: empty a library of all of its bibcode contents
+
+    ``` bash
+      $ curl -H "Authorization: Bearer $token" -H "Content-Type: application/json" \
+        https://api.adsabs.harvard.edu/v1/biblib/libraries/operations/9KBh8sVHQxaVkoPALtoXgg \
+        -X POST \
+        -d '{"action": "empty"}'
+    ```
+
+    *Response*:
+
+
+    `{"public": true, "bibcode": [], "name": "New difference library",
+    "description": "Sample difference library"}`
+
+
+    **Copy**: copy the bibcode contents from the primary library to the
+    secondary library (this will not empty the library first)
+
+    ``` bash
+      $ curl -H "Authorization: Bearer $token" -H "Content-Type: application/json" \
+        https://api.adsabs.harvard.edu/v1/biblib/libraries/operations/BeUbSWXtTPCaRhRV3nec_w \
+        -X POST \
+        -d '{"action": "copy", "libraries": ["9KBh8sVHQxaVkoPALtoXgg"]}'
+    ```
+
+
+    *Response*:
+
+
+    `{"public": true, "bibcode": ["2009A&A...502..515G", "2010ApJ...710L.156R",
+    "2010ApJ...710..248C", "2003ApJ...595..665X", "2011ApJ...731L..12S",
+    "2010ApJ...721..505R", "2011ApJ...734...87R", "2010ApJ...723.1255R",
+    "2006ApJ...639L..51A", "2001AJ....122.2993S", "2010ASPC..423..355R",
+    "2010A&A...518A..59G", "2010ApJ...721L..48K"], "name": "New difference
+    library", "description": "Sample difference library"}`
+  tags:
+    - libraries
+  security:
+    - ApiKeySecurity: []
+  requestBody:
+    description: >
+      JSON containing the action to be performed and metadata of the library to
+      be created.
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - action
+          properties:
+            action:
+              type: string
+              description: |
+                Set operation to perform; allowed values are:
+                  * union: take the union of the primary and the secondary
+                  libraries. The result is saved to a new library.
+                  * intersection: take the intersection of the primary and the
+                  secondary libraries. The result is saved to a new library
+                  * difference: take the difference between the primary and the
+                  secondary libraries. The result is saved to a new library
+                  * copy: copy the contents of the primary library into the
+                  secondary library. The secondary library is not emptied first;
+                  use the empty operation on the secondary library first in order
+                  to create a duplicate of the primary library in the secondary library
+                  * empty: empty the primary library of its contents (no secondary
+                  library ID is needed)
+            libraries:
+              type: array
+              description: >
+                list of secondary library IDs; multiple secondary libraries are
+                allowed for [union, intersection, difference]; one secondary
+                library is allowed for copy; no secondary libraries are allowed
+                for empty
+              items:
+                type: string
+            name:
+              type: string
+              description: >
+                name of the new library to be created for [union, intersection,
+                difference]; the name must be unique for a given user; if no
+                name is specified, the name used will be "Untitled" with a
+                timestamp
+            description:
+              type: string
+              description: >
+                description of the new library to be created for [union,
+                intersection, difference]; if no description is specified, the
+                description used will include the set operation used and the
+                primary and secondary library IDs
+            public:
+              type: boolean
+              description: >
+                sets whether the new library created by [union, intersection,
+                difference] is publicly viewable or not; the new library will be
+                private unless otherwise specified
+  responses:
+    '200':
+      description: Metadata for created/modified library
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                description: ID of created library (if any)
+                type: string
+              name:
+                description: Name of created/modified library
+                type: string
+              description:
+                description: Description of created/modified library
+                type: string
+              bibcode:
+                description: Bibcodes in created/modified library
+                items:
+                  type: string
+    '400':
+      description: >
+        No username passed, bad library ID passed, wrong type passed, secondary
+        libraries not specified where required, too many secondary libraries
+        specified, or user requested a non-standard operation
+    '403':
+      description: |
+        User does not have permission to perform this operation
+    '409':
+      description: |
+        Duplicate library name exists

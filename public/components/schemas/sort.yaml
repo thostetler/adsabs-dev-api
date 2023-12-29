@@ -1,0 +1,33 @@
+name: sort
+description: >
+  The format is 'field' + 'direction' where direction is one of 'asc' or 'desc'
+  and field is any of the valid indexes. The default sorting is by relevance
+  (computed by our search engine). Example\: 'sort=read_count+desc' Some useful
+  fields to sort by may be date, citation_count, or read_count.
+in: query
+required: false
+schema:
+  type: string
+  enum:
+    - id asc
+    - author_count asc
+    - bibcode asc
+    - citation_count asc
+    - citation_count_norm asc
+    - classic_factor asc
+    - first_author asc
+    - date asc
+    - entry_date asc
+    - read_count asc'
+    - score asc
+    - id desc
+    - author_count desc
+    - bibcode desc
+    - citation_count desc
+    - citation_count_norm desc
+    - classic_factor desc
+    - first_author desc
+    - date desc
+    - entry_date desc
+    - read_count desc
+    - score desc

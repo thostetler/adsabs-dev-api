@@ -1,0 +1,74 @@
+get:
+  summary: Search using a stored query
+  description: >
+    Search using the stored query and return the same data as Search API
+    endpoint.
+
+
+    ## Example response
+
+
+    ```JSON
+      {
+        "response": {
+            "docs": [
+                {
+                    "id": "10690723"
+                },
+                {
+                    "id": "11057363"
+                },
+                {
+                    "id": "10564749"
+                },
+                {
+                    "id": "10796089"
+                },
+                {
+                    "id": "10867252"
+                },
+                {
+                    "id": "10867221"
+                },
+                {
+                    "id": "10867251"
+                },
+                {
+                    "id": "10867277"
+                },
+                {
+                    "id": "11057812"
+                }
+            ],
+            "numFound": 9,
+            "start": 0
+        },
+        "responseHeader": {
+            "QTime": 6,
+            "params": {
+                "fl": "id",
+                "fq": "{!bitset}",
+                "q": "*:*",
+                "wt": "json"
+            },
+            "status": 0
+        }
+      }
+    ```
+  parameters:
+    - $ref: ../components/parameters/queryId.yaml
+    - name: jsonobj
+      description: You can submit query parameters that override parts of the saved query.
+      required: false
+      in: header
+      schema:
+        $ref: ../components/schemas/vaultObject.yaml
+  tags:
+    - stored search
+  security:
+    - ApiKeySecurity: []
+  responses:
+    '200':
+      $ref: ../components/responses/SearchResults.yaml
+    '404':
+      description: QID object not found
