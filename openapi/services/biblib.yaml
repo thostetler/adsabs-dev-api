@@ -374,11 +374,11 @@ biblib-query:
                     description: >
                       query context filtering
                   start:
-                    type: int
+                    type: integer
                     description: >
                       The entry number of the query to begin on
                   rows:
-                    type: int
+                    type: integer
                     description: >
                       How many entries to include from the query
                   sort:
@@ -430,21 +430,21 @@ biblib-libraries:
         required: false
         in: query
         schema:
-          type: int
+          type: integer
           default: 0
       - name: rows
         description: number of libraries to return
         required: false
         in: query
         schema:
-          type: int
+          type: integer
           default: None
       - name: sort
         description: key to sort the libraries by
         required: false
         in: query
         schema:
-          type: str
+          type: string
           enum:
             - date_created
             - date_last_modified
@@ -454,7 +454,7 @@ biblib-libraries:
         required: false
         in: query
         schema:
-          type: str
+          type: string
           enum:
             - asc
             - desc
@@ -558,13 +558,13 @@ biblib-libraries-library_id:
         description: starting document index
         in: query
         schema:
-          type: int
+          type: integer
           default: 0
       - name: rows
         description: number of documents to return
         in: query
         schema:
-          type: int
+          type: integer
           default: 20
       - name: sort
         description: document sort order
