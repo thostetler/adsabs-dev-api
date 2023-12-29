@@ -1,5 +1,4 @@
 post:
-  operationId: export-bibtexabs
   summary: BibTeX + abstract export for multiple bibcodes (POST)
   description: |
     Export the given bibcodes in the BibTeX + abstract format

@@ -1,5 +1,4 @@
 get:
-  operationId: export-bibtex-get
   summary: BibTeX export for a single bibcode (GET)
   parameters:
     - $ref: ../components/parameters/bibcode.yaml
