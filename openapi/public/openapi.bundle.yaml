@@ -1146,6 +1146,8 @@ paths:
                       Number of bibcodes removed, if 'remove' is used
                   bibcodes:
                     type: array
+                    items:
+                      type: string
                     description: |
                       All bibcodes added from the query
         '400':
