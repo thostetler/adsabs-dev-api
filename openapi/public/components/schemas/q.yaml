@@ -1,9 +1,5 @@
-name: q
 description: >-
   Query string; for detailed documentation go to
   https://ui.adsabs.harvard.edu/help/search/search-syntax
-in: query
-required: true
-schema:
-  type: string
+required: ["q"]
 example: author%3Amart%C3%ADnez+neutron+star
