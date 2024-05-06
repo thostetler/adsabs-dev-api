@@ -4130,25 +4130,22 @@ components:
           description: serialized JSON
     q:
       description: Query string; for detailed documentation go to https://ui.adsabs.harvard.edu/help/search/search-syntax
-      required: true
+      required:
+        - q
       example: author%3Amart%C3%ADnez+neutron+star
     fl:
       description: Comma delimited set of fields to return; default is 'id'
       example: bibcode,author,title
-
     start:
       description: For pagination, offset of the first returned result (default=0)
-      required: false
-
+      required: []
     rows:
       description: How many records to return for this request (default=10, maximum=2000)
-      required: false
-
+      required: []
     sort:
       description: |
         The format is 'field' + 'direction' where direction is one of 'asc' or 'desc' and field is any of the valid indexes. The default sorting is by relevance (computed by our search engine). Example\: 'sort=read_count+desc' Some useful fields to sort by may be date, citation_count, or read_count.
-      required: false
-
+      required: []
     vaultObject:
       type: object
       properties:
