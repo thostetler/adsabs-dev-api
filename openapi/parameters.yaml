@@ -89,7 +89,6 @@ fq:
   name: fq
   description: Additional filters applied on top of the results of the main query.
   in: query
-  required: false
   schema:
     type: array
     maxItems: 10
@@ -161,7 +160,6 @@ rows:
   name: rows
   description: How many records to return for this request (default=10, maximum=2000)
   in: query
-  required: false
   schema:
     type: integer
     default: 10
@@ -175,7 +173,6 @@ sort:
     'sort=read_count+desc' Some useful fields to sort by may be date,
     citation_count, or read_count.
   in: query
-  required: false
   schema:
     type: string
     enum:
@@ -205,7 +202,6 @@ start:
   name: start
   description: For pagination, offset of the first returned result (default=0)
   in: query
-  required: false
   schema:
     type: integer
     minimum: 0

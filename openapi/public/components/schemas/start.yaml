@@ -1,3 +1,7 @@
+name: start
 description: For pagination, offset of the first returned result (default=0)
-required: []
-
+in: query
+schema:
+  type: integer
+  minimum: 0
+  default: 0

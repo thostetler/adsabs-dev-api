@@ -107,7 +107,6 @@ vault-execute_query:
         description: >-
           You can submit query parameters that override parts of the saved
           query.
-        required: false
         in: header
         schema:
           $ref: '../schemas.yaml#/vaultObject'

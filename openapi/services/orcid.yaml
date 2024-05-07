@@ -136,7 +136,6 @@ orcid-orcidId-orcid-profile-type:
             - full
       - name: update
         description: Set to True to update local storage
-        required: false
         in: query
         schema:
           type: boolean

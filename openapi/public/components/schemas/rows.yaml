@@ -1,3 +1,7 @@
+name: rows
 description: How many records to return for this request (default=10, maximum=2000)
-required: []
-
+in: query
+schema:
+  type: integer
+  default: 10
+  maximum: 2000

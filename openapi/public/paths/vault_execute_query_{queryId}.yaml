@@ -59,7 +59,6 @@ get:
     - $ref: ../components/parameters/queryId.yaml
     - name: jsonobj
       description: You can submit query parameters that override parts of the saved query.
-      required: false
       in: header
       schema:
         $ref: ../components/schemas/vaultObject.yaml

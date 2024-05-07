@@ -1,7 +1,6 @@
 name: fq
 description: Additional filters applied on top of the results of the main query.
 in: query
-required: false
 schema:
   type: array
   maxItems: 10

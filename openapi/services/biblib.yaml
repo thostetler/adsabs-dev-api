@@ -429,21 +429,18 @@ biblib-libraries:
     parameters:
       - name: start
         description: start index for response
-        required: false
         in: query
         schema:
           type: integer
           default: 0
       - name: rows
         description: number of libraries to return
-        required: false
         in: query
         schema:
           type: integer
           default: None
       - name: sort
         description: key to sort the libraries by
-        required: false
         in: query
         schema:
           type: string
@@ -453,7 +450,6 @@ biblib-libraries:
           default: date_created
       - name: order
         description: order to sort the libraries in
-        required: false
         in: query
         schema:
           type: string

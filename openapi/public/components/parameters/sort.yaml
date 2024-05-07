@@ -5,7 +5,6 @@ description: >
   (computed by our search engine). Example\: 'sort=read_count+desc' Some useful
   fields to sort by may be date, citation_count, or read_count.
 in: query
-required: false
 schema:
   type: string
   enum:

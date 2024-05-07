@@ -31,48 +31,50 @@ info:
     url: https://github.com/adsabs/adsabs-dev-api
     email: adshelp@cfa.harvard.edu
   version: 1.0.0
-servers:
-  - url: https://api.adsabs.harvard.edu/{basePath}
-    description: Production Server
-    variables:
-      basePath:
-        default: v1
-        enum:
-          - v1
-  - url: https://devapi.adsabs.harvard.edu/{basePath}
-    description: Development Server
-    variables:
-      basePath:
-        default: v1
-        enum:
-          - v1
-security:
-  - ApiKeySecurity: []
-tags:
-  - name: search
-  - name: stored search
-  - name: libraries
-  - name: export (tagged formats)
-  - name: export (LaTeX formats)
-  - name: export (XML formats)
-  - name: export (other)
-  - name: metrics
-  - name: author affiliation
-  - name: citation helper
-  - name: classic import
-  - name: objects
-  - name: journals
-  - name: recommender
-  - name: reference
-  - name: resolver
-  - name: notifications
-  - name: visualizations
 externalDocs:
   description: Complete documentation describing how to use this API
   url: https://github.com/adsabs/adsabs-dev-api
+servers:
+- url: "https://api.adsabs.harvard.edu/{basePath}"
+  description: Production Server
+  variables:
+    basePath:
+      default: v1
+      enum:
+      - v1
+- url: "https://devapi.adsabs.harvard.edu/{basePath}"
+  description: Development Server
+  variables:
+    basePath:
+      default: v1
+      enum:
+      - v1
+security:
+- ApiKeySecurity: []
+tags:
+- name: search
+- name: stored search
+- name: libraries
+- name: export (tagged formats)
+- name: export (LaTeX formats)
+- name: export (XML formats)
+- name: export (other)
+- name: metrics
+- name: author affiliation
+- name: citation helper
+- name: classic import
+- name: objects
+- name: journals
+- name: recommender
+- name: reference
+- name: resolver
+- name: notifications
+- name: visualizations
 paths:
   /search/query:
     get:
+      tags:
+      - search
       summary: Search ADS
       description: |
         Do a search.
@@ -142,27 +144,27 @@ paths:
         `q=transiting+exoplanets&rows=200`|  Search for "transiting exoplanets", get 200 rows
         `q=transiting+exoplanets&rows=200&start=201`|   Same search but get the next 200 rows
       parameters:
-        - $ref: '#/components/parameters/q'
-        - $ref: '#/components/parameters/fq'
-        - $ref: '#/components/parameters/fl'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/rows'
-        - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/q'
+      - $ref: '#/components/parameters/fq'
+      - $ref: '#/components/parameters/fl'
+      - $ref: '#/components/parameters/start'
+      - $ref: '#/components/parameters/rows'
+      - $ref: '#/components/parameters/sort'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/SearchResults'
-        '400':
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Resource not found
-        '499':
+        "499":
           description: Server too busy
-        '500':
+        "500":
           description: Server error
-      tags:
-        - search
   /search/qtree:
     get:
+      tags:
+      - search
       summary: (advanced) Search ADS and return a query tree object
       description: |
         Returns a `query tree` (Abstract Syntax Tree - AST) as understood by our query parser. The structure can be used by external applications to rewrite the query or check its syntactic correctness.
@@ -183,27 +185,27 @@ paths:
             }
         ```
       parameters:
-        - $ref: '#/components/parameters/q'
-        - $ref: '#/components/parameters/fq'
-        - $ref: '#/components/parameters/fl'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/rows'
-        - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/q'
+      - $ref: '#/components/parameters/fq'
+      - $ref: '#/components/parameters/fl'
+      - $ref: '#/components/parameters/start'
+      - $ref: '#/components/parameters/rows'
+      - $ref: '#/components/parameters/sort'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/QTree'
-        '400':
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Resource not found
-        '499':
+        "499":
           description: Server too busy
-        '500':
+        "500":
           description: Server error
-      tags:
-        - search
   /search/bigquery:
     post:
+      tags:
+      - search
       summary: Search using bigquery
       description: |
         Search endpoint which accepts a list of many IDs (bibcodes). Supports paging.
@@ -234,15 +236,13 @@ paths:
           -X 'POST' -H 'Authorization: Bearer TOKEN' -H 'Content-Type: big-query/csv' \
           -d $'bibcode\n1907AN....174...59.\n1908PA.....16..445.\n1989LNP...334..242S'
         ```
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - $ref: '#/components/parameters/q'
-        - $ref: '#/components/parameters/fq'
-        - $ref: '#/components/parameters/fl'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/rows'
-        - $ref: '#/components/parameters/sort'
+      - $ref: '#/components/parameters/q'
+      - $ref: '#/components/parameters/fq'
+      - $ref: '#/components/parameters/fl'
+      - $ref: '#/components/parameters/start'
+      - $ref: '#/components/parameters/rows'
+      - $ref: '#/components/parameters/sort'
       requestBody:
         description: |
           Newline separated list of values; the first line specifies the index field, the rest are the search values. <br/> Currently, we allow searching in `bibcode` index only. You can submit `canonical` as well as `alternate` bibcodes - the search will automatically match both. In the future, the list of available indexes may be extended.
@@ -253,18 +253,20 @@ paths:
             schema:
               type: string
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/SearchResults'
-        '404':
+        "404":
           $ref: '#/components/responses/SearchResults'
-        '499':
+        "499":
           description: Server too busy
-        '500':
+        "500":
           description: Server error
-      tags:
-        - search
+      security:
+      - ApiKeySecurity: []
   /vault/query:
     post:
+      tags:
+      - stored search
       summary: Save a query
       description: |
         Save a query for later execution. Can be either a regular query or a bigquery.
@@ -287,17 +289,17 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/vaultObject'
-      tags:
-        - stored search
-      security:
-        - ApiKeySecurity: []
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/VaultResponse'
-        '404':
+        "404":
           description: QID object not found
+      security:
+      - ApiKeySecurity: []
   /vault/query/{queryId}:
     get:
+      tags:
+      - stored search
       summary: Retrieve information about a stored query
       description: |
         Retrive information about the previously stored query.
@@ -312,18 +314,18 @@ paths:
         }
         ```
       parameters:
-        - $ref: '#/components/parameters/queryId'
-      tags:
-        - stored search
-      security:
-        - ApiKeySecurity: []
+      - $ref: '#/components/parameters/queryId'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/VaultResponse'
-        '404':
+        "404":
           description: QID object not found
+      security:
+      - ApiKeySecurity: []
   /vault/execute_query/{queryId}:
     get:
+      tags:
+      - stored search
       summary: Search using a stored query
       description: |
         Search using the stored query and return the same data as Search API endpoint.
@@ -378,34 +380,34 @@ paths:
           }
         ```
       parameters:
-        - $ref: '#/components/parameters/queryId'
-        - name: jsonobj
-          description: You can submit query parameters that override parts of the saved query.
-          in: header
-          schema:
-            $ref: '#/components/schemas/vaultObject'
-      tags:
-        - stored search
-      security:
-        - ApiKeySecurity: []
+      - $ref: '#/components/parameters/queryId'
+      - name: jsonobj
+        in: header
+        description: You can submit query parameters that override parts of the saved
+          query.
+        required: false
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/vaultObject'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/SearchResults'
-        '404':
+        "404":
           description: QID object not found
+      security:
+      - ApiKeySecurity: []
   /vault/query2svg/{queryId}:
     get:
+      tags:
+      - stored search
       summary: Return an SVG for a stored query
       description: |
         Returns an SVG for a stored query. The image shows the number of results returned by the stored query.
-      tags:
-        - stored search
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - $ref: '#/components/parameters/queryId'
+      - $ref: '#/components/parameters/queryId'
       responses:
-        '200':
+        "200":
           description: Code of the SVG image
           content:
             image/svg+xml:
@@ -413,48 +415,59 @@ paths:
                 type: string
                 xml:
                   name: svg
+      security:
+      - ApiKeySecurity: []
   /biblib/libraries:
     get:
+      tags:
+      - libraries
       summary: View all libraries for a given user
-      parameters:
-        - name: start
-          description: start index for response
-          in: query
-          schema:
-            type: integer
-            default: 0
-        - name: rows
-          description: number of libraries to return
-          in: query
-          schema:
-            type: integer
-            default: None
-        - name: sort
-          description: key to sort the libraries by
-          in: query
-          schema:
-            type: string
-            enum:
-              - date_created
-              - date_last_modified
-            default: date_created
-        - name: order
-          description: order to sort the libraries in
-          in: query
-          schema:
-            type: string
-            enum:
-              - asc
-              - desc
-            default: asc
       description: |
         View all libraries for the user associated with the given API token.
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: start
+        in: query
+        description: start index for response
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 0
+      - name: rows
+        in: query
+        description: number of libraries to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        description: key to sort the libraries by
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: date_created
+          enum:
+          - date_created
+          - date_last_modified
+      - name: order
+        in: query
+        description: order to sort the libraries in
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: asc
+          enum:
+          - asc
+          - desc
       responses:
-        '200':
+        "200":
           description: Metadata for all libraries for a given user
           content:
             application/json:
@@ -465,17 +478,17 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/libraryMetadata'
-        '400':
+        "400":
           description: |
             No username passed
+      security:
+      - ApiKeySecurity: []
     post:
+      tags:
+      - libraries
       summary: Create a new library
       description: |
         Create a library for the requesting user. Returns the metadata of the library created.
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the metadata and bibcodes of the library to be created.
@@ -494,9 +507,9 @@ paths:
                     (optional) description of the library. The default is "My ADS library"
                 public:
                   type: boolean
-                  default: false
                   description: |
                     (optional) set to true to allow public access. The default is false, or a private library
+                  default: false
                 bibcode:
                   type: array
                   description: |
@@ -504,7 +517,7 @@ paths:
                   items:
                     type: string
       responses:
-        '200':
+        "200":
           description: |
             Metadata of the library just created
           content:
@@ -522,59 +535,76 @@ paths:
                     type: array
                     items:
                       type: string
-        '400':
+        "400":
           description: |
             No username passed, or wrong type passed
-        '409':
+        "409":
           description: Duplicate library name exists
+      security:
+      - ApiKeySecurity: []
   /biblib/libraries/{library_id}:
     get:
+      tags:
+      - libraries
       summary: View a single library
-      parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
-        - name: start
-          description: starting document index
-          in: query
-          schema:
-            type: integer
-            default: 0
-        - name: rows
-          description: number of documents to return
-          in: query
-          schema:
-            type: integer
-            default: 20
-        - name: sort
-          description: document sort order
-          in: query
-          schema:
-            type: string
-            default: date desc
-        - name: fl
-          description: returned fields
-          in: query
-          schema:
-            type: string
-            default: bibcode
-        - name: raw
-          description: returns raw bibcodes from database
-          in: query
-          schema:
-            type: boolean
-            default: false
       description: |
         View metadata and contents of a specific library. Takes pagination and field arguments consistent with the "search" endpoint to support sorting and paging for documents within a library. The raw argument passes all bibcodes stored in the library, regardless of whether or not they are currently in ADS.
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: start
+        in: query
+        description: starting document index
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 0
+      - name: rows
+        in: query
+        description: number of documents to return
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: document sort order
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: date desc
+      - name: fl
+        in: query
+        description: returned fields
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: bibcode
+      - name: raw
+        in: query
+        description: returns raw bibcodes from database
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
       responses:
-        '200':
+        "200":
           description: Metadata and contents of the given library
           content:
             application/json:
@@ -590,7 +620,6 @@ paths:
                       type: string
                   solr:
                     type: object
-                    description: Response from solr, when validating library contents
                     properties:
                       response:
                         type: object
@@ -632,9 +661,9 @@ paths:
                                 type: string
                           status:
                             type: integer
+                    description: "Response from solr, when validating library contents"
                   updates:
                     type: object
-                    description: Updates from Solr validation
                     properties:
                       duplicates_removed:
                         type: integer
@@ -647,17 +676,16 @@ paths:
                           type: object
                       num_updated:
                         type: integer
-                        description: Number of documents modified based on the response from Solr
+                        description: Number of documents modified based on the response
+                          from Solr
+                    description: Updates from Solr validation
+      security:
+      - ApiKeySecurity: []
   /biblib/libraries/operations/{library_id}:
     post:
+      tags:
+      - libraries
       summary: Perform set operations on one or more libraries
-      parameters:
-        - name: library_id
-          description: Library ID for the primary library
-          required: true
-          in: path
-          schema:
-            type: string
       description: |
         Perform set operations on one or more libraries. The library_id (string) is the unique identifier of the primary library, as specified in the /libraries GET response. Depending on the operation, a secondary library ID may need to be passed in the post payload.
         ## Examples
@@ -719,19 +747,24 @@ paths:
         *Response*:
 
         `{"public": true, "bibcode": ["2009A&A...502..515G", "2010ApJ...710L.156R", "2010ApJ...710..248C", "2003ApJ...595..665X", "2011ApJ...731L..12S", "2010ApJ...721..505R", "2011ApJ...734...87R", "2010ApJ...723.1255R", "2006ApJ...639L..51A", "2001AJ....122.2993S", "2010ASPC..423..355R", "2010A&A...518A..59G", "2010ApJ...721L..48K"], "name": "New difference library", "description": "Sample difference library"}`
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID for the primary library
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: |
           JSON containing the action to be performed and metadata of the library to be created.
         content:
           application/json:
             schema:
-              type: object
               required:
-                - action
+              - action
+              type: object
               properties:
                 action:
                   type: string
@@ -768,7 +801,7 @@ paths:
                   description: |
                     sets whether the new library created by [union, intersection, difference] is publicly viewable or not; the new library will be private unless otherwise specified
       responses:
-        '200':
+        "200":
           description: Metadata for created/modified library
           content:
             application/json:
@@ -776,116 +809,50 @@ paths:
                 type: object
                 properties:
                   id:
+                    type: string
                     description: ID of created library (if any)
-                    type: string
                   name:
+                    type: string
                     description: Name of created/modified library
-                    type: string
                   description:
-                    description: Description of created/modified library
                     type: string
+                    description: Description of created/modified library
                   bibcode:
+                    type: array
                     description: Bibcodes in created/modified library
                     items:
                       type: string
-        '400':
+        "400":
           description: |
             No username passed, bad library ID passed, wrong type passed, secondary libraries not specified where required, too many secondary libraries specified, or user requested a non-standard operation
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation
-        '409':
+        "409":
           description: |
             Duplicate library name exists
-  /biblib/documents/{library_id}:
-    post:
-      summary: Add or remove documents from a library
-      parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
-      description: |
-        Add or delete a document to a given library. Returns the number of documents added or removed.
-
-        The following type of user can add or remove documents:
-        * owner
-        * admin
-        * write
-      tags:
-        - libraries
       security:
-        - ApiKeySecurity: []
-      requestBody:
-        description: |
-          JSON containing the action to be performed and metadata of the library to be created.
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - action
-                - bibcode
-              properties:
-                bibcode:
-                  type: array
-                  description: |
-                    List of bibcodes to be added or removed
-                  items:
-                    type: string
-                action:
-                  type: string
-                  description: |
-                    'add' or 'remove' to add or remove the given bibcodes from the specified library
-      responses:
-        '200':
-          description: Returns number of bibcodes added or removed
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  number_added:
-                    type: integer
-                    description: |
-                      Number of bibcodes added, if 'add' is used
-                  number_removed:
-                    type: integer
-                    description: |
-                      Number of bibcodes removed, if 'remove' is used
-                  invalid_bibcodes:
-                    type: array
-                    description: |
-                      List of bibcodes that were not found in ADS and could not be added to the library.
-                    items:
-                      type: string
-        '400':
-          description: |
-            No username passed, bad library ID passed, wrong type passed, user requested a non-standard operation or user supplied list of bibcodes contained no valid bibcodes.
-        '403':
-          description: |
-            User does not have permission to perform this operation
+      - ApiKeySecurity: []
+  /biblib/documents/{library_id}:
     put:
+      tags:
+      - libraries
       summary: Update the metadata of a library
-      parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
       description: |
         Update the metadata of a given library.
 
         The following type of user can edit library metadata:
         * owner
         * admin
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: |
           JSON containing the metadata to update. If some fields don't need to be changed, they don't need to be included in the payload.
@@ -907,7 +874,7 @@ paths:
                   description: |
                     true if the library should be publicly viewable, false if it should be private (note that this is case sensitive and should be lower case)
       responses:
-        '200':
+        "200":
           description: |
             Returns the key/value that was requested to be updated
           content:
@@ -921,55 +888,132 @@ paths:
                     type: string
                   public:
                     type: boolean
-        '400':
+        "400":
           description: |
             No username passed, bad library ID passed, or wrong type passed
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation
-        '409':
+        "409":
           description: |
             Duplicate library name exists
-        '410':
+        "410":
           description: |
             Library specified does not exist
-    delete:
-      summary: Delete a library
+      security:
+      - ApiKeySecurity: []
+    post:
+      tags:
+      - libraries
+      summary: Add or remove documents from a library
+      description: |
+        Add or delete a document to a given library. Returns the number of documents added or removed.
+
+        The following type of user can add or remove documents:
+        * owner
+        * admin
+        * write
       parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        description: |
+          JSON containing the action to be performed and metadata of the library to be created.
+        content:
+          application/json:
+            schema:
+              required:
+              - action
+              - bibcode
+              type: object
+              properties:
+                bibcode:
+                  type: array
+                  description: |
+                    List of bibcodes to be added or removed
+                  items:
+                    type: string
+                action:
+                  type: string
+                  description: |
+                    'add' or 'remove' to add or remove the given bibcodes from the specified library
+      responses:
+        "200":
+          description: Returns number of bibcodes added or removed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  number_added:
+                    type: integer
+                    description: |
+                      Number of bibcodes added, if 'add' is used
+                  number_removed:
+                    type: integer
+                    description: |
+                      Number of bibcodes removed, if 'remove' is used
+                  invalid_bibcodes:
+                    type: array
+                    description: |
+                      List of bibcodes that were not found in ADS and could not be added to the library.
+                    items:
+                      type: string
+        "400":
+          description: |
+            No username passed, bad library ID passed, wrong type passed, user requested a non-standard operation or user supplied list of bibcodes contained no valid bibcodes.
+        "403":
+          description: |
+            User does not have permission to perform this operation
+      security:
+      - ApiKeySecurity: []
+    delete:
+      tags:
+      - libraries
+      summary: Delete a library
       description: |
         Delete the given library.
 
         The following type of user can delete the library:
         * owner
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           description: |
             Returns empty object
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: |
             No username passed or bad library ID passed
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation
-        '410':
+        "410":
           description: |
             Library specified does not exist
+      security:
+      - ApiKeySecurity: []
   /biblib/query/{library_id}:
     get:
+      tags:
+      - libraries
       summary: Add documents to a library by query
       description: |
         Add documents to a given library by passing a query to the endpoint.
@@ -996,22 +1040,22 @@ paths:
             "1973A&A....24..337S",
             "1974Natur.248...30H"]}
         ```
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
-        - $ref: '#/components/parameters/q'
-        - $ref: '#/components/parameters/fq'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/rows'
-        - $ref: '#/components/parameters/sort'
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/q'
+      - $ref: '#/components/parameters/fq'
+      - $ref: '#/components/parameters/start'
+      - $ref: '#/components/parameters/rows'
+      - $ref: '#/components/parameters/sort'
       responses:
-        '200':
+        "200":
           description: Returns number of bibcodes added or removed
           content:
             application/json:
@@ -1028,29 +1072,24 @@ paths:
                       List of bibcodes added to the library.
                     items:
                       type: string
-        '400':
+        "400":
           description: |
             No username passed, bad library ID passed, wrong type passed, user requested a non-standard operation or user supplied a malformed search query
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation
-        '404':
+        "404":
           description: Resource not found
-        '499':
+        "499":
           description: Server too busy
-        '500':
+        "500":
           description: Server error
-      tags:
-        - libraries
+      security:
+      - ApiKeySecurity: []
     post:
+      tags:
+      - libraries
       summary: Add or remove documents from a library by query
-      parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
       description: |
         Add or delete a documents to a given library based on supplied "search" query parameters. Returns the number of documents added or removed.
 
@@ -1075,25 +1114,30 @@ paths:
             "1973A&A....24..337S",
             "1974Natur.248...30H"]}
         ```
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: |
           JSON containing the action to be performed and metadata of the library to be created.
         content:
           application/json:
             schema:
-              type: object
               required:
-                - action
-                - params
+              - action
+              - params
+              type: object
               properties:
                 params:
-                  type: object
                   required:
-                    - q
+                  - q
+                  type: array
                   properties:
                     q:
                       type: string
@@ -1124,7 +1168,7 @@ paths:
                   description: |
                     'add' or 'remove' to add or remove the given query from the specified library
       responses:
-        '200':
+        "200":
           description: Returns number of bibcodes added or removed
           content:
             application/json:
@@ -1141,34 +1185,36 @@ paths:
                       Number of bibcodes removed, if 'remove' is used
                   bibcodes:
                     type: array
-                    items:
-                      type: string
                     description: |
                       All bibcodes added from the query
-        '400':
+                    items:
+                      type: string
+        "400":
           description: |
             No username passed, bad library ID passed, wrong type passed, or user requested a non-standard operation User passed a malformed search query.
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation.
+      security:
+      - ApiKeySecurity: []
   /biblib/permissions/{library_id}:
     get:
+      tags:
+      - libraries
       summary: View permissions of a library
-      parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
       description: |
         View permissions of a specific library.
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           description: List of all permissions for the user for the library
           content:
             application/json:
@@ -1181,41 +1227,43 @@ paths:
                       Key is email of the user, item is a list of that user's permissions for the given library
                     items:
                       type: string
-        '400':
+        "400":
           description: |
             No username passed, or bad library ID passed
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation
+      security:
+      - ApiKeySecurity: []
     post:
+      tags:
+      - libraries
       summary: Edit permission of a library
-      parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
       description: |
         Edit the permissions of a library
 
         The following type of user can add or remove documents:
         * owner
         * admin
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: |
           JSON containing the email of the user whose permissions will be modified and the permissions to be added or removed. User may not modify their own permissions
         content:
           application/json:
             schema:
-              type: object
               required:
-                - email
-                - permission
+              - email
+              - permission
+              type: object
               properties:
                 email:
                   type: string
@@ -1223,8 +1271,6 @@ paths:
                     Email address of user whose permissions will be modified
                 permission:
                   type: object
-                  description: |
-                    Only required to include permissions that will be modified
                   properties:
                     read:
                       type: boolean
@@ -1232,712 +1278,716 @@ paths:
                       type: boolean
                     admin:
                       type: boolean
+                  description: |
+                    Only required to include permissions that will be modified
       responses:
-        '200':
+        "200":
           description: |
             Returns empty object
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: |
             No username passed, bad library ID passed, or wrong type passed
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation
-        '404':
+        "404":
           description: |
             User does not have an ADS account
+      security:
+      - ApiKeySecurity: []
   /biblib/transfer/{library_id}:
     post:
+      tags:
+      - libraries
       summary: Transfer ownership of a library
-      parameters:
-        - name: library_id
-          description: Library ID
-          required: true
-          in: path
-          schema:
-            type: string
       description: |
         Transfer ownership of a library from one user to another
 
         The following type of user can add or remove documents:
         * owner
-      tags:
-        - libraries
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - name: library_id
+        in: path
+        description: Library ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         description: |
           JSON containing the email of the user that library ownership will be transferred to
         content:
           application/json:
             schema:
-              type: object
               required:
-                - email
+              - email
+              type: object
               properties:
                 email:
                   type: string
                   description: |
                     Email address of user who ownership will be transferred to
       responses:
-        '200':
+        "200":
           description: |
             Returns empty object
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: |
             No username passed, bad library ID passed, or wrong type passed
-        '403':
+        "403":
           description: |
             User does not have permission to perform this operation
-        '404':
+        "404":
           description: |
             User does not have an ADS account
+      security:
+      - ApiKeySecurity: []
   /export/bibtexabs/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: BibTeX + abstract export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the BibTeX + abstract format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/bibtexabs:
     post:
+      tags:
+      - export (tagged formats)
       summary: BibTeX + abstract export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the BibTeX + abstract format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/bibtex/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: BibTeX export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the BibTeX format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/bibtex:
     post:
+      tags:
+      - export (tagged formats)
       summary: BibTeX export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the BibTeX format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/ads/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: ADS (generic tagged) export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the ADS format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/ads:
     post:
+      tags:
+      - export (tagged formats)
       summary: ADS (generic tagged) export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the ADS format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/endnote/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: EndNote export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the EndNote format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/endnote:
     post:
+      tags:
+      - export (tagged formats)
       summary: EndNote export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the EndNote format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/procite/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: ProCite export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the ProCite format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/procite:
     post:
+      tags:
+      - export (tagged formats)
       summary: ProCite export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the ProCite format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/ris/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: RIS (Refman) export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the RIS (Refman) format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/ris:
     post:
+      tags:
+      - export (tagged formats)
       summary: RIS (Refman) export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the RIS (Refman) format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/refworks/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: RefWorks export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the RefWorks format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/refworks:
     post:
+      tags:
+      - export (tagged formats)
       summary: RefWorks export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the RefWorks format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/medlars/{bibcode}:
     get:
+      tags:
+      - export (tagged formats)
       summary: MEDLARS export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the MEDLARS format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/medlars:
     post:
+      tags:
+      - export (tagged formats)
       summary: MEDLARS export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the MEDLARS format
-      tags:
-        - export (tagged formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/aastex/{bibcode}:
     get:
+      tags:
+      - export (LaTeX formats)
       summary: AASTeX export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the AASTeX format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/aastex:
     post:
+      tags:
+      - export (LaTeX formats)
       summary: AASTeX export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the AASTeX format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/icarus/{bibcode}:
     get:
+      tags:
+      - export (LaTeX formats)
       summary: Icarus export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the Icarus format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/icarus:
     post:
+      tags:
+      - export (LaTeX formats)
       summary: Icarus export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the Icarus format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/mnras/{bibcode}:
     get:
+      tags:
+      - export (LaTeX formats)
       summary: MNRAS export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the MNRAS format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/mnras:
     post:
+      tags:
+      - export (LaTeX formats)
       summary: MNRAS export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the MNRAS format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/soph/{bibcode}:
     get:
+      tags:
+      - export (LaTeX formats)
       summary: Solar Physics (SoPh) export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the Solar Physics (SoPh) format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/soph:
     post:
+      tags:
+      - export (LaTeX formats)
       summary: Solar Physics (SoPh) export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the Solar Physics (SoPh) format
-      tags:
-        - export (LaTeX formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/dcxml/{bibcode}:
     get:
+      tags:
+      - export (XML formats)
       summary: Dublin Core (DC) XML export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the Dublin Core (DC) XML format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/dcxml:
     post:
+      tags:
+      - export (XML formats)
       summary: Dublin Core (DC) XML export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the Dublin Core (DC) XML format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/refxml/{bibcode}:
     get:
+      tags:
+      - export (XML formats)
       summary: REF-XML export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the REF-XML format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/refxml:
     post:
+      tags:
+      - export (XML formats)
       summary: REF-XML export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the REF-XML format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/refabsxml/{bibcode}:
     get:
+      tags:
+      - export (XML formats)
       summary: REFABS-XML export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the REFABS-XML format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/refabsxml:
     post:
+      tags:
+      - export (XML formats)
       summary: REFABS-XML export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the REFABS-XML format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/votable/{bibcode}:
     get:
+      tags:
+      - export (XML formats)
       summary: VOTables export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the VOTables format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/votable:
     post:
+      tags:
+      - export (XML formats)
       summary: VOTables export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the VOTables format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/rss/{bibcode}:
     get:
+      tags:
+      - export (XML formats)
       summary: RSS export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the RSS format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/rss:
     post:
+      tags:
+      - export (XML formats)
       summary: RSS export for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the RSS format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/rss/{bibcode}/{link}:
     get:
+      tags:
+      - export (XML formats)
       summary: RSS export for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
-        - $ref: '#/components/parameters/link'
       description: |
         Export the given bibcode in the RSS format
-      tags:
-        - export (XML formats)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
+      - $ref: '#/components/parameters/link'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/ieee/{bibcode}:
     get:
+      tags:
+      - export (other)
       summary: IEEE export (Unicode-encoded) for a single bibcode (GET)
-      parameters:
-        - $ref: '#/components/parameters/bibcode'
       description: |
         Export the given bibcode in the IEEE format
-      tags:
-        - export (other)
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/bibcode'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponseGet'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/ieee:
     post:
+      tags:
+      - export (other)
       summary: IEEE export (Unicode-encoded) for multiple bibcodes (POST)
       description: |
         Export the given bibcodes in the IEEE format
-      tags:
-        - export (other)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         $ref: '#/components/requestBodies/exportBody'
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/csl:
     post:
+      tags:
+      - export (other)
       summary: CSL export for one or more bibcodes (POST)
       description: |
         Export the given bibcodes in the given style and format
-      tags:
-        - export (other)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the bibcodes to export, and the style and format to export them in.
@@ -1945,49 +1995,50 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/bibcodeObject'
-                - type: object
-                  required:
-                    - style
-                    - format
-                  properties:
-                    style:
-                      description: Journal style to use
-                      type: string
-                      enum:
-                        - aastex
-                        - icarus
-                        - mnras
-                        - soph
-                        - aspc
-                        - apsj
-                        - aasj
-                        - ieee
-                    format:
-                      description: Output format; use 1 for Unicode, 2 for HTML, or 3 for LaTeX
-                      type: integer
-                    journalformat:
-                      description: |
-                        Format of journal name; used only for aastex, aspc, and aasj styles. Use 1 for AASTeX macros (default), 2 for journal abbreviations, or 3 for full journal name.
-                      type: integer
-                    sort:
-                      description: Sort order for export
-                      type: string
+              - $ref: '#/components/schemas/bibcodeObject'
+              - required:
+                - format
+                - style
+                type: object
+                properties:
+                  style:
+                    type: string
+                    description: Journal style to use
+                    enum:
+                    - aastex
+                    - icarus
+                    - mnras
+                    - soph
+                    - aspc
+                    - apsj
+                    - aasj
+                    - ieee
+                  format:
+                    type: integer
+                    description: "Output format; use 1 for Unicode, 2 for HTML, or\
+                      \ 3 for LaTeX"
+                  journalformat:
+                    type: integer
+                    description: |
+                      Format of journal name; used only for aastex, aspc, and aasj styles. Use 1 for AASTeX macros (default), 2 for journal abbreviations, or 3 for full journal name.
+                  sort:
+                    type: string
+                    description: Sort order for export
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /export/custom:
     post:
+      tags:
+      - export (other)
       summary: Custom-format export for one or more bibcodes (POST)
       description: |
         Export the given bibcodes in the given custom format
-      tags:
-        - export (other)
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the bibcodes to export, and the custom format to export them in.
@@ -1995,23 +2046,27 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/bibcodeObject'
-                - type: object
-                  required:
-                    - format
-                  properties:
-                    format:
-                      description: |
-                        Custom format; see the [main export documentation](https://ui.adsabs.harvard.edu/help/actions/export) for more information.
-                      type: string
+              - $ref: '#/components/schemas/bibcodeObject'
+              - required:
+                - format
+                type: object
+                properties:
+                  format:
+                    type: string
+                    description: |
+                      Custom format; see the [main export documentation](https://ui.adsabs.harvard.edu/help/actions/export) for more information.
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ExportResponse'
-        '404':
+        "404":
           description: |
             No result from Solr
+      security:
+      - ApiKeySecurity: []
   /metrics:
     post:
+      tags:
+      - metrics
       summary: Retrieve metrics for one or more bibcodes
       description: |
         This endpoint retrieves some or all of the available citation metrics for one or more bibcodes. More documentation is available [here](https://github.com/adsabs/adsabs-dev-api/blob/master/Metrics_API.ipynb).
@@ -2023,10 +2078,6 @@ paths:
         * 'indicators': indicators, like the h-index, g-index, m-index, etc.; returns 'indicators' and 'indicators refereed'
         * 'histograms': publication, citation, reads and downloads histograms; returns 'histograms'
         * 'timeseries': time series for a set of indicators; returns 'time series'
-      tags:
-        - metrics
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the bibcode(s) to produce metrics for, as well as types of metrics desired. Depending on the type of metrics requested, other options may be included in the payload.
@@ -2034,174 +2085,177 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/bibcodesObject'
-                - type: object
-                  properties:
-                    types:
-                      description: Types of metrics to return. If not specified, all metrics will be returned.
-                      type: array
-                      items:
-                        type: string
-                        enum:
-                          - basic
-                          - citations
-                          - indicators
-                          - histograms
-                          - timeseries
-                    histograms:
-                      description: |
-                        If the metrics type is 'histograms', types of histograms to return. If not specified, all histograms will be returned.
+              - $ref: '#/components/schemas/bibcodesObject'
+              - type: object
+                properties:
+                  types:
+                    type: array
+                    description: "Types of metrics to return. If not specified, all\
+                      \ metrics will be returned."
+                    items:
+                      type: string
+                      enum:
+                      - basic
+                      - citations
+                      - indicators
+                      - histograms
+                      - timeseries
+                  histograms:
+                    type: array
+                    description: |
+                      If the metrics type is 'histograms', types of histograms to return. If not specified, all histograms will be returned.
 
-                        The available histogram types are:
+                      The available histogram types are:
 
-                        * 'publications': returns 'all publications', 'refereed publications', 'all publications normalized', 'refereed publications normalized'
-                        * 'reads': returns 'all reads', 'refereed reads', 'all reads normalized', 'refereed reads normalized'
-                        * 'downloads': returns 'all downloads', 'refereed downloads', 'all downloads normalized', 'refereed downloads normalized'
-                        * 'citations': returns 'refereed to refereed', 'nonrefereed to refereed', 'refereed to nonrefereed', 'nonrefereed to nonrefereed', 'refereed to refereed normalized', 'nonrefereed to refereed normalized', 'refereed to nonrefereed normalized', 'nonrefereed to nonrefereed normalized'
-                      type: array
-                      items:
-                        type: string
-                        enum:
-                          - publications
-                          - reads
-                          - downloads
-                          - citations
+                      * 'publications': returns 'all publications', 'refereed publications', 'all publications normalized', 'refereed publications normalized'
+                      * 'reads': returns 'all reads', 'refereed reads', 'all reads normalized', 'refereed reads normalized'
+                      * 'downloads': returns 'all downloads', 'refereed downloads', 'all downloads normalized', 'refereed downloads normalized'
+                      * 'citations': returns 'refereed to refereed', 'nonrefereed to refereed', 'refereed to nonrefereed', 'nonrefereed to nonrefereed', 'refereed to refereed normalized', 'nonrefereed to refereed normalized', 'refereed to nonrefereed normalized', 'nonrefereed to nonrefereed normalized'
+                    items:
+                      type: string
+                      enum:
+                      - publications
+                      - reads
+                      - downloads
+                      - citations
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the requested metrics
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/basicMetricsResponse'
-                  - type: object
-                    properties:
-                      indicators:
-                        type: object
-                        properties:
-                          g:
-                            type: integer
-                          h:
-                            type: integer
-                          i10:
-                            type: integer
-                          i100:
-                            type: integer
-                          m:
-                            type: number
-                          read10:
-                            type: number
-                          riq:
-                            type: integer
-                          tori:
-                            type: number
-                      indicators refereed:
-                        type: object
-                        properties:
-                          g:
-                            type: integer
-                          h:
-                            type: integer
-                          i10:
-                            type: integer
-                          i100:
-                            type: integer
-                          m:
-                            type: number
-                          read10:
-                            type: number
-                          riq:
-                            type: integer
-                          tori:
-                            type: number
-                      time series:
-                        type: object
-                        properties:
-                          g:
-                            type: object
-                            properties:
-                              year:
-                                type: integer
-                          h:
-                            type: object
-                            properties:
-                              year:
-                                type: integer
-                          i10:
-                            type: object
-                            properties:
-                              year:
-                                type: integer
-                          i100:
-                            type: object
-                            properties:
-                              year:
-                                type: integer
-                          m:
-                            type: object
-                            properties:
-                              year:
-                                type: number
-                          read10:
-                            type: object
-                            properties:
-                              year:
-                                type: number
-                          riq:
-                            type: object
-                            properties:
-                              year:
-                                type: integer
-                          tori:
-                            type: object
-                            properties:
-                              year:
-                                type: number
-        '403':
+                - $ref: '#/components/schemas/basicMetricsResponse'
+                - type: object
+                  properties:
+                    indicators:
+                      type: object
+                      properties:
+                        g:
+                          type: integer
+                        h:
+                          type: integer
+                        i10:
+                          type: integer
+                        i100:
+                          type: integer
+                        m:
+                          type: number
+                        read10:
+                          type: number
+                        riq:
+                          type: integer
+                        tori:
+                          type: number
+                    indicators refereed:
+                      type: object
+                      properties:
+                        g:
+                          type: integer
+                        h:
+                          type: integer
+                        i10:
+                          type: integer
+                        i100:
+                          type: integer
+                        m:
+                          type: number
+                        read10:
+                          type: number
+                        riq:
+                          type: integer
+                        tori:
+                          type: number
+                    time series:
+                      type: object
+                      properties:
+                        g:
+                          type: object
+                          properties:
+                            year:
+                              type: integer
+                        h:
+                          type: object
+                          properties:
+                            year:
+                              type: integer
+                        i10:
+                          type: object
+                          properties:
+                            year:
+                              type: integer
+                        i100:
+                          type: object
+                          properties:
+                            year:
+                              type: integer
+                        m:
+                          type: object
+                          properties:
+                            year:
+                              type: number
+                        read10:
+                          type: object
+                          properties:
+                            year:
+                              type: number
+                        riq:
+                          type: object
+                          properties:
+                            year:
+                              type: integer
+                        tori:
+                          type: object
+                          properties:
+                            year:
+                              type: number
+        "403":
           description: |
             Unable to get results
-        '500':
+        "500":
           description: Metrics request blew up
+      security:
+      - ApiKeySecurity: []
   /metrics/{bibcode}:
     get:
+      tags:
+      - metrics
       summary: Retrieve metrics for one bibcode
       description: |
         Similar to the `/metrics` endpoint, but returns data for a single bibcode only. Does not return indicators or timeseries.
       parameters:
-        - name: bibcode
-          description: Bibcode to return metrics for
-          required: true
-          in: path
-          schema:
-            type: string
-      tags:
-        - metrics
-      security:
-        - ApiKeySecurity: []
+      - name: bibcode
+        in: path
+        description: Bibcode to return metrics for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the requested metrics
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/basicMetricsResponse'
-        '403':
+                - $ref: '#/components/schemas/basicMetricsResponse'
+        "403":
           description: |
             Unable to get results
-        '500':
+        "500":
           description: Metrics request blew up
+      security:
+      - ApiKeySecurity: []
   /metrics/detail:
     post:
+      tags:
+      - metrics
       summary: Retrieve detail-level metrics for one or more bibcodes
       description: |
         Provides basic, year-by-year metrics on a per-bibcode basis.
-      tags:
-        - metrics
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: JSON containing the bibcode(s) to produce metrics for.
         content:
@@ -2209,7 +2263,7 @@ paths:
             schema:
               $ref: '#/components/schemas/bibcodesObject'
       responses:
-        '200':
+        "200":
           description: JSON containing the requested metrics
           content:
             application/json:
@@ -2243,37 +2297,38 @@ paths:
                     type: array
                     items:
                       type: string
-        '403':
+        "403":
           description: |
             Unable to get results
-        '500':
+        "500":
           description: Metrics request blew up
+      security:
+      - ApiKeySecurity: []
   /author-affiliation/search:
     post:
+      tags:
+      - author affiliation
       summary: Create the author-affiliations report
       description: |
         Create the author-affiliations report, generally used for reporting co-authors and their affiliations to grant agencies. Returns information in JSON.
-      tags:
-        - author affiliation
-      security:
-        - ApiKeySecurity: []
       requestBody:
-        description: JSON containing the bibcode(s) to produce the author affiliations for.
+        description: JSON containing the bibcode(s) to produce the author affiliations
+          for.
         content:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/bibcodeObject'
-                - type: object
-                  properties:
-                    maxauthor:
-                      description: First N authors for each paper to report on
-                      type: integer
-                    numyears:
-                      description: Last N years to retrieve affiliations for
-                      type: integer
+              - $ref: '#/components/schemas/bibcodeObject'
+              - type: object
+                properties:
+                  maxauthor:
+                    type: integer
+                    description: First N authors for each paper to report on
+                  numyears:
+                    type: integer
+                    description: Last N years to retrieve affiliations for
       responses:
-        '200':
+        "200":
           description: JSON containing the requested author affiliations
           content:
             application/json:
@@ -2298,59 +2353,59 @@ paths:
                                 type: string
                             lastActiveDate:
                               type: string
-        '400':
-          description: Bad request, check payload
-        '404':
+        "400":
+          description: "Bad request, check payload"
+        "404":
           description: No result from Solr
+      security:
+      - ApiKeySecurity: []
   /author-affiliation/export:
     post:
+      tags:
+      - author affiliation
       summary: Export the author-affiliations report
       description: |
         Export the author-affiliations report, generally used for reporting co-authors and their affiliations to grant agencies. Outputs to CSV, Excel, text, or directly to the browser/terminal. To save to file, use your terminal's flags or programming language's functionality.
-      tags:
-        - author affiliation
-      security:
-        - ApiKeySecurity: []
       requestBody:
-        description: Formatted report to output, along with format string
+        description: "Formatted report to output, along with format string"
         content:
           application/json:
             schema:
               type: object
               properties:
                 format:
+                  type: string
                   description: |
                     Formatting string for the export.
-                  type: string
                   enum:
-                    - '| Lastname, Firstname | Affiliation | Last Active Date | [csv]'
-                    - '| Lastname | Firstname | Affiliation | Last Active Date | [csv]'
-                    - '| Lastname, Firstname | Affiliation | Last Active Date | [excel]'
-                    - '| Lastname | Firstname | Affiliation | Last Active Date | [excel]'
-                    - Lastname, Firstname(Affiliation)Last Active Date[text]
-                    - Lastname, Firstname(Affiliation)Last Active Date[browser]
+                  - "| Lastname, Firstname | Affiliation | Last Active Date | [csv]"
+                  - "| Lastname | Firstname | Affiliation | Last Active Date | [csv]"
+                  - "| Lastname, Firstname | Affiliation | Last Active Date | [excel]"
+                  - "| Lastname | Firstname | Affiliation | Last Active Date | [excel]"
+                  - "Lastname, Firstname(Affiliation)Last Active Date[text]"
+                  - "Lastname, Firstname(Affiliation)Last Active Date[browser]"
                 selected:
+                  type: array
                   description: |
                     Formatted data to export.
-                  type: array
                   items:
                     type: string
                     description: |
                       Format: Author name (last, first) | affiliation | last active date (year/month)
       responses:
-        '200':
-          description: Returns file or text, depending on format requested
-        '400':
-          description: Bad request, check payload
+        "200":
+          description: "Returns file or text, depending on format requested"
+        "400":
+          description: "Bad request, check payload"
+      security:
+      - ApiKeySecurity: []
   /citation_helper:
     post:
+      tags:
+      - citation helper
       summary: Suggest missing citations
       description: |
         Given a set of bibcodes, this endpoint uses a "friends of friends" analysis to suggest up to 10 missing citations. These missing citations cite and/or are cited by the papers in the given list, but are not in the list. The score given with each returned paper reflects how many papers in the input list the result is associated with.
-      tags:
-        - citation helper
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: JSON containing the bibcode(s) to run the citation helper for
         content:
@@ -2358,7 +2413,7 @@ paths:
             schema:
               $ref: '#/components/schemas/bibcodesObject'
       responses:
-        '200':
+        "200":
           description: JSON containing the suggested papers
           content:
             application/json:
@@ -2375,17 +2430,17 @@ paths:
                       type: integer
                     title:
                       type: string
+      security:
+      - ApiKeySecurity: []
   /harbour/mirrors:
     get:
+      tags:
+      - classic import
       summary: Fetch a list of ADS Classic mirrors
       description: |
         Returns the list of mirrors used by ADS Classic
-      tags:
-        - classic import
-      security:
-        - ApiKeySecurity: []
       responses:
-        '200':
+        "200":
           description: Array of available mirrors
           content:
             application/json:
@@ -2393,17 +2448,17 @@ paths:
                 type: array
                 items:
                   type: string
+      security:
+      - ApiKeySecurity: []
   /harbour/user:
     get:
+      tags:
+      - classic import
       summary: Fetch user's ADS Classic information
       description: |
         Returns a user's ADS Classic registration email and mirror
-      tags:
-        - classic import
-      security:
-        - ApiKeySecurity: []
       responses:
-        '200':
+        "200":
           description: |
             JSON containing user's Classic information. User is determined by the API token used.
           content:
@@ -2417,27 +2472,27 @@ paths:
                     type: string
                   twopointoh_email:
                     type: string
-        '400':
+        "400":
           description: User does not have an ADS Classic account
+      security:
+      - ApiKeySecurity: []
   /harbour/auth/classic:
     post:
+      tags:
+      - classic import
       summary: Sign into ADS Classic account
       description: |
         Sign into ADS Classic account and link it to your main ADS account
-      tags:
-        - classic import
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: JSON containing the user's Classic ADS authentication
         content:
           application/json:
             schema:
-              type: object
               required:
-                - classic_email
-                - classic_mirror
-                - classic_password
+              - classic_email
+              - classic_mirror
+              - classic_password
+              type: object
               properties:
                 classic_email:
                   type: string
@@ -2446,7 +2501,7 @@ paths:
                 classic_password:
                   type: string
       responses:
-        '200':
+        "200":
           description: |
             JSON containing user's stored Classic information.
           content:
@@ -2460,23 +2515,23 @@ paths:
                     type: string
                   classic_authed:
                     type: boolean
-        '400':
+        "400":
           description: Malformed payload; see error message for details
-        '404':
+        "404":
           description: Classic authentication failed
-        '500':
+        "500":
           description: Classic did not return a cookie
-        '504':
+        "504":
           description: Classic timeout
+      security:
+      - ApiKeySecurity: []
   /objects:
     post:
+      tags:
+      - objects
       summary: Return object identifers for a given string
       description: |
         For a given string, returns the object identifiers from either NED or SIMBAD, whichever is specified
-      tags:
-        - objects
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing either a list of object names ("objects") or a list of SIMBAD object identifiers ("identifiers")
@@ -2487,24 +2542,24 @@ paths:
               properties:
                 source:
                   type: string
-                  enum:
-                    - simbad
-                    - ned
                   example: SIMBAD
+                  enum:
+                  - simbad
+                  - ned
                 identifiers:
                   type: array
+                  example:
+                  - "1575544"
                   items:
                     type: string
-                  example:
-                    - '1575544'
                 objects:
                   type: array
+                  example:
+                  - M31
                   items:
                     type: string
-                  example:
-                    - M31
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the input object or identifier as the key and the values are the canonical names or identifiers. If the object or identifier was not recognized, the value returned with be None.
 
@@ -2518,23 +2573,23 @@ paths:
                     type: object
                     properties:
                       id:
-                        description: Integer or string, depending on input source
                         type: string
+                        description: "Integer or string, depending on input source"
                       canonical:
                         type: string
                 example:
-                  '1575544':
-                    id: '1575544'
+                  "1575544":
+                    id: "1575544"
                     canonical: M  31
+      security:
+      - ApiKeySecurity: []
   /objects/query:
     post:
+      tags:
+      - objects
       summary: Return a Solr query with object identifiers
       description: |
         For a given object, return a Solr query that expands the object to include the SIMBAD and NED identifiers.
-      tags:
-        - objects
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input object query to expand
@@ -2549,9 +2604,9 @@ paths:
                     type: string
               example:
                 query:
-                  - object:m31
+                - object:m31
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the expanded search query.
 
@@ -2565,189 +2620,204 @@ paths:
                     type: string
                 example:
                   query: ((=abs:m31 OR simbid:1575544 OR nedid:MESSIER_031) database:astronomy)
+      security:
+      - ApiKeySecurity: []
   /journals/summary/{bibstem}:
     get:
+      tags:
+      - journals
       summary: Summary information about a publication indexed by ADS
-      parameters:
-        - $ref: '#/components/parameters/JournalBibstem'
       description: |
         For a bibstem, return information about the publication, including the official name and commonly-used variations, publisher and publisher history (when available), and the ISSN and other identifiers when available.
-      tags:
-        - journals
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/JournalBibstem'
       responses:
-        '200':
+        "200":
           description: |
             JSON object containing `master`, `idents`, `abbrev`, `pubhist`, and `names` objects, which contain summary information about the publication (master), known alphanumeric identifiers (idents), known abbreviations for the title (abbrev), historical information about the journal and its publisher(s) when available (pubhist), and native-language and transliterated names for journals having names in languages other than English, when available (names).
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/summary'
-        '403':
-          description: Authentication failure, unable to get results
-        '500':
-          description: Internal error, unable to get results
+                - $ref: '#/components/schemas/summary'
+        "403":
+          description: "Authentication failure, unable to get results"
+        "500":
+          description: "Internal error, unable to get results"
+      security:
+      - ApiKeySecurity: []
   /journals/journal/{journalname}:
     get:
+      tags:
+      - journals
       summary: |
         Indexed journals that match a user-supplied search string
       description: |
         For a user-supplied search string, return a list of publication titles and their accompanying bibstems, if the search string matches one of the title's official name, translated or transliterated names, or a known alternate title or abbreviation.  Spaces ("%20" in URL-encoded format) are treated as substring terminators, such that the returned result of a search for `Astro%20Jour` would include both `Astronomical Journal` and `Astrophysical Journal`.
       parameters:
-        - $ref: '#/components/parameters/JournalJournalName'
-      tags:
-        - journals
-      security:
-        - ApiKeySecurity: []
+      - $ref: '#/components/parameters/JournalJournalName'
       responses:
-        '200':
+        "200":
           description: |
             JSON list of possible matches containing both bibstem and the publication's formal name of record.
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/journal'
-        '403':
-          description: Authentication failure, unable to get results
-        '500':
-          description: Internal error, unable to get results
+                - $ref: '#/components/schemas/journal'
+        "403":
+          description: "Authentication failure, unable to get results"
+        "500":
+          description: "Internal error, unable to get results"
+      security:
+      - ApiKeySecurity: []
   /journals/holdings/{bibstem}/{volume}:
     get:
+      tags:
+      - journals
       summary: |
         Electronic sources available via the ADS for a given bibstem and volume
-      parameters:
-        - $ref: '#/components/parameters/JournalBibstem'
-        - $ref: '#/components/parameters/JournalVolume'
       description: |
         For a user-supplied publication bibstem and volume, return a list of what types of electronic sources are available in our catalog holdings of papers from that publication.  This service doesn't provide the actual links to the paper -- this is intended to provide librarians information at a quick glance what esources are available, including publisher pdf and html, eprints, and ADS-hosted PDF fulltext.
-      tags:
-        - journals
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/JournalBibstem'
+      - $ref: '#/components/parameters/JournalVolume'
       responses:
-        '200':
+        "200":
           description: |
             JSON object containing the bibcode, volume, number papers in the volume, and an array of holdings objects containing the page number and an array of esource types.
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/holdings'
-        '403':
-          description: Authentication failure, unable to get results
-        '500':
-          description: Internal error, unable to get results
+                - $ref: '#/components/schemas/holdings'
+        "403":
+          description: "Authentication failure, unable to get results"
+        "500":
+          description: "Internal error, unable to get results"
+      security:
+      - ApiKeySecurity: []
   /journals/refsource/{bibstem}:
     get:
+      tags:
+      - journals
       summary: Sources of reference data for given publication
-      parameters:
-        - $ref: '#/components/parameters/JournalBibstem'
       description: |
         For a given bibstem, provide a tally of reference sources for each volume for which references exist.  For a publication with references supplied by the publisher for most or all papers, the `publisher` count should approximately match the paper count for that volume.  References may also originate from other sources for individual papers, such as author-supplied (e.g. ArXiv) preprints and OCR by NASA ADS.
-      tags:
-        - journals
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/JournalBibstem'
       responses:
-        '200':
+        "200":
           description: |
             JSON object containing an array of refsource objects, each of which contains the volume, the year, and a dictionary of refsources containing the refsource type and count.
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/refsource'
-        '403':
-          description: Authentication failure, unable to get results
-        '500':
-          description: Internal error, unable to get results
+                - $ref: '#/components/schemas/refsource'
+        "403":
+          description: "Authentication failure, unable to get results"
+        "500":
+          description: "Internal error, unable to get results"
+      security:
+      - ApiKeySecurity: []
   /journals/issn/{issn}:
     get:
+      tags:
+      - journals
       summary: ADS bibstem for a given ISSN
-      parameters:
-        - $ref: '#/components/parameters/JournalISSN'
       description: |
         For a given ISSN, return a dictionary of the corresponding ADS bibstem, journal name and ISSN type (e.g. print, electronic) if it exists.  If the record is not found, return an empty dictionary.
-      tags:
-        - journals
-      security:
-        - ApiKeySecurity: []
+      parameters:
+      - $ref: '#/components/parameters/JournalISSN'
       responses:
-        '200':
+        "200":
           description: |
             JSON object containing a dictionary.  If results are found, the dictionary contains the ISSN, ISSN type, ADS bibstem, and journal name of record as key value pairs.  If no results are found, the dictionary is empty.
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/issn'
-        '403':
-          description: Authentication failure, unable to get results
-        '500':
-          description: Internal error, unable to get results
+                - $ref: '#/components/schemas/issn'
+        "403":
+          description: "Authentication failure, unable to get results"
+        "500":
+          description: "Internal error, unable to get results"
+      security:
+      - ApiKeySecurity: []
   /oracle/matchdoc:
     post:
-      summary: Given some input metadata, return the matched bibcode
+      tags:
+      - recommender
+      summary: "Given some input metadata, return the matched bibcode"
       description: |
         Matches input metadata to an existing record and returns the bibcode of the match. Can be used to find the bibcode of an input record or to match various versions of the same record (e.g. the published paper with its arXiv version). Also returned is the confidence score and which input metadata fields were used in the matching.
-      tags:
-        - recommender
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input data for the recommender service
         content:
           application/json:
             schema:
-              type: object
               required:
-                - abstract
-                - title
-                - author
-                - year
-                - doctype
+              - abstract
+              - author
+              - doctype
+              - title
+              - year
+              type: object
               properties:
                 abstract:
                   type: string
                 title:
                   type: string
                 author:
-                  description: Format is "Last1, First1; Last2, First2; ..."
                   type: string
+                  description: "Format is \"Last1, First1; Last2, First2; ...\""
                 year:
-                  description: Type can be string or integer
                   type: integer
+                  description: Type can be string or integer
                 doctype:
+                  type: string
                   description: |
                     Doctype of input metadata
-                  type: string
                 doi:
                   type: string
                 mustmatch:
+                  type: boolean
                   description: |
                     Set flag to true if you know ADS must have this paper; in some cases, the main matching algorithm may fail to find a match (e.g. if the abstract has changed significantly between the arXiv and published version). If this is the case, setting this flag to true allows a match to be made based on the title alone.
-                  type: boolean
                 match_doctype:
+                  type: array
                   description: |
                     Expected doctype of matched record
-                  type: array
                   items:
                     type: string
               example:
-                abstract: The nucleus of our nearest, large galactic neighbour, M31, contains an eccentric nuclear disc - a disc of stars on eccentric, apsidally aligned orbits around a supermassive black hole (SMBH). Previous studies of eccentric nuclear discs considered only an isolated disc, and did not study their dynamics under galaxy mergers (particularly a perturbing SMBH). Here, we present the first study of how eccentric discs are affected by a galactic merger. We perform N-body simulations to study the disc under a range of different possible SMBH initial conditions. A second SMBH in the disc always disrupts it, but more distant SMBHs can shut off differential precession and stabilize the disc. This results in a more aligned disc, nearly uniform eccentricity profile, and suppression of tidal disruption events compared to the isolated disc. We also discuss implications of our work for the presence of a secondary SMBH in M31.
-                title: 'Galactic merger implications for eccentric nuclear discs: a mechanism for disc alignment'
-                author: Rodriguez, Alexander; Generozov, Aleksey; Madigan, Ann-Marie
+                abstract: "The nucleus of our nearest, large galactic neighbour, M31,\
+                  \ contains an eccentric nuclear disc - a disc of stars on eccentric,\
+                  \ apsidally aligned orbits around a supermassive black hole (SMBH).\
+                  \ Previous studies of eccentric nuclear discs considered only an\
+                  \ isolated disc, and did not study their dynamics under galaxy mergers\
+                  \ (particularly a perturbing SMBH). Here, we present the first study\
+                  \ of how eccentric discs are affected by a galactic merger. We perform\
+                  \ N-body simulations to study the disc under a range of different\
+                  \ possible SMBH initial conditions. A second SMBH in the disc always\
+                  \ disrupts it, but more distant SMBHs can shut off differential\
+                  \ precession and stabilize the disc. This results in a more aligned\
+                  \ disc, nearly uniform eccentricity profile, and suppression of\
+                  \ tidal disruption events compared to the isolated disc. We also\
+                  \ discuss implications of our work for the presence of a secondary\
+                  \ SMBH in M31."
+                title: "Galactic merger implications for eccentric nuclear discs:\
+                  \ a mechanism for disc alignment"
+                author: "Rodriguez, Alexander; Generozov, Aleksey; Madigan, Ann-Marie"
                 year: 2021
                 doctype: article
                 match_doctype:
-                  - article
+                - article
                 mustmatch: false
       responses:
-        '200':
+        "200":
           description: |
             JSON containing any matches, plus information about the matching process. Confidence and scores range between 0 (low) and 1 (high).
 
@@ -2758,13 +2828,13 @@ paths:
                 type: object
                 properties:
                   query:
+                    type: string
                     description: |
                       Solr query used to find the matches
-                    type: string
                   comment:
+                    type: string
                     description: |
                       Logging from the matching algorithm
-                    type: string
                   match:
                     type: array
                     items:
@@ -2786,68 +2856,83 @@ paths:
                             year:
                               type: integer
                 example:
-                  query: topn(10, similar("The nucleus of our nearest, large galactic neighbour, M31, contains an eccentric nuclear disc - a disc of stars on eccentric, apsidally aligned orbits around a supermassive black hole (SMBH). Previous studies of eccentric nuclear discs considered only an isolated disc, and did not study their dynamics under galaxy mergers (particularly a perturbing SMBH). Here, we present the first study of how eccentric discs are affected by a galactic merger. We perform N-body simulations to study the disc under a range of different possible SMBH initial conditions. A second SMBH in the disc always disrupts it, but more distant SMBHs can shut off differential precession and stabilize the disc. This results in a more aligned disc, nearly uniform eccentricity profile, and suppression of tidal disruption events compared to the isolated disc. We also discuss implications of our work for the presence of a secondary SMBH in M31.", input abstract, 43, 1, 1)) doctype:(article) property:REFEREED
+                  query: "topn(10, similar(\"The nucleus of our nearest, large galactic\
+                    \ neighbour, M31, contains an eccentric nuclear disc - a disc\
+                    \ of stars on eccentric, apsidally aligned orbits around a supermassive\
+                    \ black hole (SMBH). Previous studies of eccentric nuclear discs\
+                    \ considered only an isolated disc, and did not study their dynamics\
+                    \ under galaxy mergers (particularly a perturbing SMBH). Here,\
+                    \ we present the first study of how eccentric discs are affected\
+                    \ by a galactic merger. We perform N-body simulations to study\
+                    \ the disc under a range of different possible SMBH initial conditions.\
+                    \ A second SMBH in the disc always disrupts it, but more distant\
+                    \ SMBHs can shut off differential precession and stabilize the\
+                    \ disc. This results in a more aligned disc, nearly uniform eccentricity\
+                    \ profile, and suppression of tidal disruption events compared\
+                    \ to the isolated disc. We also discuss implications of our work\
+                    \ for the presence of a secondary SMBH in M31.\", input abstract,\
+                    \ 43, 1, 1)) doctype:(article) property:REFEREED"
                   comment: Matching doctype `article`.
                   match:
-                    - bibcode: 2021MNRAS.503.2713R
-                      confidence: 1
-                      scores:
-                        abstract: 1
-                        title: 1
-                        author: 1
-                        year: 1
-        '400':
-          description: No payload provided, or payload is missing needed parameters
+                  - bibcode: 2021MNRAS.503.2713R
+                    confidence: 1
+                    scores:
+                      abstract: 1
+                      title: 1
+                      author: 1
+                      year: 1
+        "400":
+          description: "No payload provided, or payload is missing needed parameters"
+      security:
+      - ApiKeySecurity: []
   /oracle/readhist:
     post:
+      tags:
+      - recommender
       summary: Return recommendations for the current user
       description: |
         Returns paper recommendations for the given user, based on their reading history.
-      tags:
-        - recommender
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input data for the recommender service
         content:
           application/json:
             schema:
-              type: object
               required:
-                - function
+              - function
+              type: object
               properties:
                 function:
+                  type: string
                   description: |
                     Second-order operator used to generate recommendations; default is 'similar'
-                  type: string
                   enum:
-                    - similar
-                    - trending
-                    - reviews
-                    - useful
+                  - similar
+                  - trending
+                  - reviews
+                  - useful
                 sort:
+                  type: string
                   description: |
                     Sort order for recommendation query
-                  type: string
                 num_docs:
+                  type: integer
                   description: |
                     Number of recommendations to return
-                  type: integer
                 top_n_reads:
+                  type: integer
                   description: |
                     Number of input records to use in generating recomendations
-                  type: integer
                 cutoff_days:
+                  type: integer
                   description: |
                     Number of days back to generate recommendations; returned recommendations will have been entered into our database between now and N days ago, where N is the entered cutoff_days
-                  type: integer
                 reader:
+                  type: string
                   description: |
                     Internal ID specifying the user; if not included, user will be determined via the API token used
-                  type: string
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the returned recommendations and the query used to generate them
           content:
@@ -2859,34 +2944,38 @@ paths:
                     type: string
                   query:
                     type: string
-        '400':
-          description: No payload provided, or payload is missing needed parameters
+        "400":
+          description: "No payload provided, or payload is missing needed parameters"
+      security:
+      - ApiKeySecurity: []
   /oracle/readhist/{function}/{reader}:
     get:
+      tags:
+      - recommender
       summary: Return recommendations for the given user
       description: |
         Returns paper recommendations for the given user, based on their reading history.
-      tags:
-        - recommender
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - name: function
-          description: |
-            Second-order operator used to generate recommendations; most common is 'similar'
-          required: true
-          in: path
-          schema:
-            type: string
-        - name: reader
-          description: |
-            Internal ID specifying the user to generate recommendations for
-          required: true
-          in: path
-          schema:
-            type: string
+      - name: function
+        in: path
+        description: |
+          Second-order operator used to generate recommendations; most common is 'similar'
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: reader
+        in: path
+        description: |
+          Internal ID specifying the user to generate recommendations for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the returned recommendations and the query used to generate them
           content:
@@ -2898,27 +2987,29 @@ paths:
                     type: string
                   query:
                     type: string
-        '400':
+        "400":
           description: Reader was not provided
+      security:
+      - ApiKeySecurity: []
   /reference/text/{reference}:
     get:
+      tags:
+      - reference
       summary: Resolve a reference string into a bibcode
       description: |
         Given a reference string (such as from the references section of a published paper), returns the bibcode of the matching paper.
-      tags:
-        - reference
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - name: reference
-          description: URL-encoded reference string
-          required: true
-          in: path
-          schema:
-            type: string
-          example: Kravchenko%20et%20al.%202020%2C%20A%26A%20637%2C%20L6
+      - name: reference
+        in: path
+        description: URL-encoded reference string
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+        example: Kravchenko%20et%20al.%202020%2C%20A%26A%20637%2C%20L6
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the input reference, the matching bibcode, and the confidence score
           content:
@@ -2930,40 +3021,41 @@ paths:
                     type: object
                     properties:
                       bibcode:
+                        type: string
                         description: Output matching bibcode
-                        type: string
                       refstring:
+                        type: string
                         description: Input reference string
-                        type: string
                       score:
-                        description: Confidence score, ranging from 0 (low) to 1 (high)
                         type: string
+                        description: "Confidence score, ranging from 0 (low) to 1\
+                          \ (high)"
                       comment:
-                        description: Error message if parsing fails
                         type: string
+                        description: Error message if parsing fails
                 example:
                   resolved:
-                    refstring: Kravchenko et al. 2020, A&A 637, L6
-                    score: '1.0'
+                    refstring: "Kravchenko et al. 2020, A&A 637, L6"
+                    score: "1.0"
                     bibcode: 2020A&A...637L...6K
+      security:
+      - ApiKeySecurity: []
   /reference/text:
     post:
+      tags:
+      - reference
       summary: Resolve one or more reference strings into a bibcode
       description: |
         Given one or more reference strings (such as from the references section of a published paper), returns the bibcode(s) of the matching paper(s). Multiple references should be passed as individual strings in a comma-delimited list.
-      tags:
-        - reference
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input reference strings
         content:
           application/json:
             schema:
-              type: object
               required:
-                - reference
+              - reference
+              type: object
               properties:
                 reference:
                   type: array
@@ -2971,10 +3063,10 @@ paths:
                     type: string
               example:
                 reference:
-                  - Kravchenko et al. 2020, A&A 637, L6
-                  - Blandford, R. D., & Znajek, R. L. 1977, MNRAS, 179, 433
+                - "Kravchenko et al. 2020, A&A 637, L6"
+                - "Blandford, R. D., & Znajek, R. L. 1977, MNRAS, 179, 433"
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the input reference, the matching bibcode, and the confidence score
           content:
@@ -2986,44 +3078,53 @@ paths:
                     type: object
                     properties:
                       bibcode:
+                        type: string
                         description: Output matching bibcode
-                        type: string
                       refstring:
+                        type: string
                         description: Input reference string
-                        type: string
                       score:
-                        description: Confidence score, ranging from 0 (low) to 1 (high)
                         type: string
+                        description: "Confidence score, ranging from 0 (low) to 1\
+                          \ (high)"
                       comment:
-                        description: Error message if parsing fails
                         type: string
+                        description: Error message if parsing fails
                 example:
-                  refstring: Kravchenko et al. 2020, A&A 637, L6
-                  score: '1.0'
+                  refstring: "Kravchenko et al. 2020, A&A 637, L6"
+                  score: "1.0"
                   bibcode: 2020A&A...637L...6K
-        '400':
-          description: Bad request, check payload
+        "400":
+          description: "Bad request, check payload"
+      security:
+      - ApiKeySecurity: []
   /reference/xml:
     post:
+      tags:
+      - reference
       summary: Resolve one or more parsed references into a bibcode
       description: |
         Given one or more parsed reference strings, returns the bibcode of the matching paper.
-      tags:
-        - reference
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the parsed input references.
         content:
           application/json:
             schema:
-              type: object
               required:
-                - parsed_reference
+              - parsed_reference
+              type: object
               properties:
                 parsed_reference:
                   type: array
+                  example:
+                  - "{'authors': 'Baumjohann, W., Haerendel, G.H.', 'journal': 'Geophysical\
+                    \ Monograph', 'title': 'Physics of Magnetic Flux Ropes', 'volume':\
+                    \ '58', 'page': '627', 'year': '1990', 'refstr': 'Baumjohann,\
+                    \ W., Haerendel, G.H., 1990. Geophysical Monograph, Physics of\
+                    \ Magnetic Flux Ropes, 58, 627.', 'refplaintext': 'Baumjohann,\
+                    \ W., Haerendel, G.H., 1990. Geophysical Monograph, Physics of\
+                    \ Magnetic Flux Ropes, 58, 627.'}"
                   items:
                     type: string
                     description: |
@@ -3040,10 +3141,8 @@ paths:
                       * refstr (used for output only)
                       * issn
                       * refplaintext (if the parsed input fails, this is used for parsing)
-                  example:
-                    - '{''authors'': ''Baumjohann, W., Haerendel, G.H.'', ''journal'': ''Geophysical Monograph'', ''title'': ''Physics of Magnetic Flux Ropes'', ''volume'': ''58'', ''page'': ''627'', ''year'': ''1990'', ''refstr'': ''Baumjohann, W., Haerendel, G.H., 1990. Geophysical Monograph, Physics of Magnetic Flux Ropes, 58, 627.'', ''refplaintext'': ''Baumjohann, W., Haerendel, G.H., 1990. Geophysical Monograph, Physics of Magnetic Flux Ropes, 58, 627.''}'
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the input reference, the matching bibcode, and the confidence score
           content:
@@ -3055,37 +3154,38 @@ paths:
                     type: object
                     properties:
                       bibcode:
+                        type: string
                         description: Output matching bibcode
-                        type: string
                       refstring:
+                        type: string
                         description: Input reference string
-                        type: string
                       score:
-                        description: Confidence score, ranging from 0 (low) to 1 (high)
                         type: string
+                        description: "Confidence score, ranging from 0 (low) to 1\
+                          \ (high)"
                       comment:
-                        description: Error message if parsing fails
                         type: string
-        '400':
-          description: Bad request, check payload
+                        description: Error message if parsing fails
+        "400":
+          description: "Bad request, check payload"
+      security:
+      - ApiKeySecurity: []
   /reference/parse:
     post:
+      tags:
+      - reference
       summary: Parse one or more input reference strings
       description: |
         Given one or more reference strings (such as from the references section of a published paper), returns the parsed reference data. Multiple references should be passed as individual strings in a comma-delimited list.
-      tags:
-        - reference
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input reference strings
         content:
           application/json:
             schema:
-              type: object
               required:
-                - reference
+              - reference
+              type: object
               properties:
                 reference:
                   type: array
@@ -3093,9 +3193,9 @@ paths:
                     type: string
               example:
                 reference:
-                  - Giraud et al., 1986, A&A, 170, 1
+                - "Giraud et al., 1986, A&A, 170, 1"
       responses:
-        '200':
+        "200":
           description: |
             JSON containing the parsed reference(s)
           content:
@@ -3119,209 +3219,215 @@ paths:
                         journal:
                           type: string
                         refstr:
-                          description: Input reference string
                           type: string
+                          description: Input reference string
                 example:
                   parsed:
-                    - authors: Giraud et al.
-                      year: '1986'
-                      volume: '170'
-                      page: '1'
-                      journal: A&A
-                      refstr: Giraud et al., 1986, A&A, 170, 1
-        '400':
-          description: Bad request, check payload
+                  - authors: Giraud et al.
+                    year: "1986"
+                    volume: "170"
+                    page: "1"
+                    journal: A&A
+                    refstr: "Giraud et al., 1986, A&A, 170, 1"
+        "400":
+          description: "Bad request, check payload"
+      security:
+      - ApiKeySecurity: []
   /resolver/{bibcode}:
     get:
+      tags:
+      - resolver
       summary: Return links to external resources for a given bibcode
       description: |
         Return links to external resources, such as a publisher's full text, data links, etc., for a given bibcode
-      tags:
-        - resolver
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - name: bibcode
-          description: Bibcode to return resources for
-          required: true
-          in: path
-          schema:
-            type: string
+      - name: bibcode
+        in: path
+        description: Bibcode to return resources for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ResolverResponse'
-        '400':
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Did not find any matching records
+      security:
+      - ApiKeySecurity: []
   /resolver/{bibcode}/{link_type}:
     get:
+      tags:
+      - resolver
       summary: Return links to a given external resource for a bibcode
       description: |
         Return links to a specific external resource, such as a publisher's full text or data links, for a given bibcode
-      tags:
-        - resolver
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - name: bibcode
-          description: Bibcode to return resources for
-          required: true
-          in: path
-          schema:
-            type: string
-        - name: link_type
-          description: |
-            External resource type to return (case-insensitive). The available link types for a given bibcode can be discovered by returning all available resources for a bibcode (via `/resolver/{bibcode}`) and looking at the `type` keywords.
-            Note: for `link_type` of `arXiv` or `doi`, an additional parameter, the `id` is required. The syntax is `/resolver/{bibcode}/{link_type}:{id}`.
+      - name: bibcode
+        in: path
+        description: Bibcode to return resources for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: link_type
+        in: path
+        description: |
+          External resource type to return (case-insensitive). The available link types for a given bibcode can be discovered by returning all available resources for a bibcode (via `/resolver/{bibcode}`) and looking at the `type` keywords.
+          Note: for `link_type` of `arXiv` or `doi`, an additional parameter, the `id` is required. The syntax is `/resolver/{bibcode}/{link_type}:{id}`.
 
-            For example:
+          For example:
 
-            `/resolver/2010ApJ...713L.103B/doi:10.1088/2041-8205/713/2/L103`
+          `/resolver/2010ApJ...713L.103B/doi:10.1088/2041-8205/713/2/L103`
 
-            `/resolver/2018arXiv180303598K/arXiv:1803.03598`
+          `/resolver/2018arXiv180303598K/arXiv:1803.03598`
 
-            Available values for `link_type`:
-            * `abstract` Abstract
-            * `citations` Citations to the Article
-            * `references` References in the Article
-            * `coreads` Also-Read Articles
-            * `toc` Table of Contents
-            * `openurl`
-            * `metrics`
-            * `graphics`
-            * `esource` Full text sources
+          Available values for `link_type`:
+          * `abstract` Abstract
+          * `citations` Citations to the Article
+          * `references` References in the Article
+          * `coreads` Also-Read Articles
+          * `toc` Table of Contents
+          * `openurl`
+          * `metrics`
+          * `graphics`
+          * `esource` Full text sources
 
-              * `pub_pdf` Publisher PDF
+            * `pub_pdf` Publisher PDF
 
-              * `eprint_pdf` Arxiv eprint
+            * `eprint_pdf` Arxiv eprint
 
-              * `author_pdf` Link to PDF page provided by author
+            * `author_pdf` Link to PDF page provided by author
 
-              * `ads_pdf` ADS PDF
+            * `ads_pdf` ADS PDF
 
-              * `pub_html` Electronic on-line publisher article (HTML)
+            * `pub_html` Electronic on-line publisher article (HTML)
 
-              * `eprint_html` Arxiv article
+            * `eprint_html` Arxiv article
 
-              * `author_html` Link to HTML page provided by author
+            * `author_html` Link to HTML page provided by author
 
-              * `ads_scan` ADS scanned article
+            * `ads_scan` ADS scanned article
 
-              * `gif` backward compatibility similar to /ads_scan
+            * `gif` backward compatibility similar to /ads_scan
 
-              * `preprint` backward compatibility similar to /eprint_html
+            * `preprint` backward compatibility similar to /eprint_html
 
-              * `ejournal` backward compatibility similar to /pub_html
+            * `ejournal` backward compatibility similar to /pub_html
 
-            * `data` On-line data
+          * `data` On-line data
 
-              * `aca` Acta Astronomica Data Files
+            * `aca` Acta Astronomica Data Files
 
-              * `alma` Atacama Large Millimeter/submillimeter Array
+            * `alma` Atacama Large Millimeter/submillimeter Array
 
-              * `ari` Astronomisches Rechen-Institut
+            * `ari` Astronomisches Rechen-Institut
 
-              * `astroverse` CfA Dataverse
+            * `astroverse` CfA Dataverse
 
-              * `atnf` Australia Telescope Online Archive
+            * `atnf` Australia Telescope Online Archive
 
-              * `author` Author Hosted Dataset
+            * `author` Author Hosted Dataset
 
-              * `bavj` Data of the German Association for Variable Stars
+            * `bavj` Data of the German Association for Variable Stars
 
-              * `bicep2` BICEP/Keck Data
+            * `bicep2` BICEP/Keck Data
 
-              * `cadc` Canadian Astronomy Data Center
+            * `cadc` Canadian Astronomy Data Center
 
-              * `cds` Strasbourg Astronomical Data Center
+            * `cds` Strasbourg Astronomical Data Center
 
-              * `chandra` Chandra X-Ray Observatory
+            * `chandra` Chandra X-Ray Observatory
 
-              * `dryad` International Repository of Research Data
+            * `dryad` International Repository of Research Data
 
-              * `esa` ESAC Science Data Center
+            * `esa` ESAC Science Data Center
 
-              * `eso` European Southern Observatory
+            * `eso` European Southern Observatory
 
-              * `figshare` Online Open Access Repository
+            * `figshare` Online Open Access Repository
 
-              * `gcpd` The General Catalogue of Photometric Data
+            * `gcpd` The General Catalogue of Photometric Data
 
-              * `github` Git Repository Hosting Service
+            * `github` Git Repository Hosting Service
 
-              * `gtc` Gran Telescopio CANARIAS Public Archive
+            * `gtc` Gran Telescopio CANARIAS Public Archive
 
-              * `heasarc` NASA's High Energy Astrophysics Science Archive Research Center
+            * `heasarc` NASA's High Energy Astrophysics Science Archive Research Center
 
-              * `herschel` Herschel Science Center
+            * `herschel` Herschel Science Center
 
-              * `ibvs` Information Bulletin on Variable Stars
+            * `ibvs` Information Bulletin on Variable Stars
 
-              * `ines` IUE Newly Extracted Spectra
+            * `ines` IUE Newly Extracted Spectra
 
-              * `iso` Infrared Space Observatory
+            * `iso` Infrared Space Observatory
 
-              * `jwst` JWST Proposal Info
+            * `jwst` JWST Proposal Info
 
-              * `koa` Keck Observatory Archive
+            * `koa` Keck Observatory Archive
 
-              * `mast` Mikulski Archive for Space Telescopes
+            * `mast` Mikulski Archive for Space Telescopes
 
-              * `ned` NASA/IPAC Extragalactic Database
+            * `ned` NASA/IPAC Extragalactic Database
 
-              * `nexsci` NASA Exoplanet Archive
+            * `nexsci` NASA Exoplanet Archive
 
-              * `noao` National Optical Astronomy Observatory
+            * `noao` National Optical Astronomy Observatory
 
-              * `pangaea` Digital Data Library and a Data Publisher for Earth System Science
+            * `pangaea` Digital Data Library and a Data Publisher for Earth System Science
 
-              * `pasa` Publication of the Astronomical Society of Australia Datasets
+            * `pasa` Publication of the Astronomical Society of Australia Datasets
 
-              * `pdg` Particle Data Group
+            * `pdg` Particle Data Group
 
-              * `pds` The NASA Planetary Data System
+            * `pds` The NASA Planetary Data System
 
-              * `protocols` Collaborative Platform and Preprint Server for Science Methods and Protocols
+            * `protocols` Collaborative Platform and Preprint Server for Science Methods and Protocols
 
-              * `simbad` SIMBAD Database at the CDS
+            * `simbad` SIMBAD Database at the CDS
 
-              * `spitzer` Spitzer Space Telescope
+            * `spitzer` Spitzer Space Telescope
 
-              * `tns` Transient Name Server
+            * `tns` Transient Name Server
 
-              * `vizier` VizieR Catalog Service
+            * `vizier` VizieR Catalog Service
 
-              * `xmm` XMM Newton Science Archive
+            * `xmm` XMM Newton Science Archive
 
-              * `zenodo` Zenodo Archive
+            * `zenodo` Zenodo Archive
 
-            * `inspire` HEP/Spires Information
-            * `librarycatalog`
-            * `presentation` Multimedia Presentation
-            * `associated` Associated Articles
-          required: true
-          in: path
-          schema:
-            type: string
+          * `inspire` HEP/Spires Information
+          * `librarycatalog`
+          * `presentation` Multimedia Presentation
+          * `associated` Associated Articles
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           $ref: '#/components/responses/ResolverResponse'
-        '400':
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Did not find any matching records
+      security:
+      - ApiKeySecurity: []
   /vault/notifications:
     get:
+      tags:
+      - notifications
       summary: View all myADS notifications set up for the current user
       description: |
         View all myADS notifications set up for the current user, associated with the given API token
-      tags:
-        - notifications
-      security:
-        - ApiKeySecurity: []
       responses:
-        '200':
+        "200":
           description: Details of notifications set up for the current user
           content:
             application/json:
@@ -3329,18 +3435,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/myADSsummaryResponse'
-        '400':
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: No notifications found for the given user
+      security:
+      - ApiKeySecurity: []
     post:
+      tags:
+      - notifications
       summary: Create a myADS notification
       description: |
         Create a myADS notification for the current user
-      tags:
-        - notifications
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the notifications setup. There are two types of notifications:
@@ -3387,96 +3493,96 @@ paths:
         content:
           application/json:
             schema:
-              type: object
               required:
-                - type
+              - type
+              type: object
               properties:
                 type:
                   type: string
                   enum:
-                    - template
-                    - query
+                  - template
+                  - query
                 name:
+                  type: string
                   description: Optional for type=template; required for type=query
-                  type: string
                 qid:
-                  description: Only used for type=query
                   type: string
-                active:
-                  description: Set to true to receive this notification
-                  type: boolean
-                stateful:
                   description: Only used for type=query
+                active:
                   type: boolean
+                  description: Set to true to receive this notification
+                stateful:
+                  type: boolean
+                  description: Only used for type=query
                 frequency:
                   type: string
                   enum:
-                    - daily
-                    - weekly
+                  - daily
+                  - weekly
                 template:
-                  description: Only used for type=template
                   type: string
+                  description: Only used for type=template
                   enum:
-                    - arxiv
-                    - authors
-                    - citations
-                    - keyword
+                  - arxiv
+                  - authors
+                  - citations
+                  - keyword
                 classes:
-                  description: Only used for type=template and template=arxiv
                   type: array
+                  description: Only used for type=template and template=arxiv
                   items:
                     type: string
                 data:
                   type: string
       responses:
-        '200':
+        "200":
           description: Returns notification setup details
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/myADSsummaryResponse'
-                  - $ref: '#/components/schemas/myADSdetailResponse'
-        '400':
+                - $ref: '#/components/schemas/myADSsummaryResponse'
+                - $ref: '#/components/schemas/myADSdetailResponse'
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Query associated with give QID does not exist
-        '500':
+        "500":
           description: User does not exist or other error
+      security:
+      - ApiKeySecurity: []
   /vault/notifications/{myads_id}:
     get:
+      tags:
+      - notifications
       summary: View the details for one myADS notification
       description: |
         View the details for one myADS notification set up for the current user, associated with the given API token
-      tags:
-        - notifications
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - $ref: '#/components/parameters/myadsId'
+      - $ref: '#/components/parameters/myadsId'
       responses:
-        '200':
+        "200":
           description: Details of none otification set up for the current user
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/myADSsummaryResponse'
-                  - $ref: '#/components/schemas/myADSdetailResponse'
-        '400':
+                - $ref: '#/components/schemas/myADSsummaryResponse'
+                - $ref: '#/components/schemas/myADSdetailResponse'
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Notification not found
+      security:
+      - ApiKeySecurity: []
     put:
+      tags:
+      - notifications
       summary: Edit the details for one myADS notification
       description: |
         Edit the details for one myADS notification set up for the current user, associated with the given API token
-      tags:
-        - notifications
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - $ref: '#/components/parameters/myadsId'
+      - $ref: '#/components/parameters/myadsId'
       requestBody:
         description: |
           JSON containing metadata of notification to edit.
@@ -3502,53 +3608,53 @@ paths:
                 frequency:
                   type: string
                   enum:
-                    - daily
-                    - weekly
+                  - daily
+                  - weekly
       responses:
-        '200':
+        "200":
           description: Details of none otification set up for the current user
           content:
             application/json:
               schema:
                 allOf:
-                  - $ref: '#/components/schemas/myADSsummaryResponse'
-                  - $ref: '#/components/schemas/myADSdetailResponse'
-        '400':
+                - $ref: '#/components/schemas/myADSsummaryResponse'
+                - $ref: '#/components/schemas/myADSdetailResponse'
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Notification not found
-        '500':
+        "500":
           description: User does not exist or other error
+      security:
+      - ApiKeySecurity: []
     delete:
+      tags:
+      - notifications
       summary: Delete one myADS notification
       description: |
         Delete one myADS notification set up for the current user, associated with the given API token
-      tags:
-        - notifications
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - $ref: '#/components/parameters/myadsId'
+      - $ref: '#/components/parameters/myadsId'
       responses:
-        '204':
+        "204":
           description: Successfully deleted the notification
-        '404':
+        "404":
           description: Notification not found
-        '500':
+        "500":
           description: Error during request
+      security:
+      - ApiKeySecurity: []
   /vault/notification_query/{myads_id}:
     get:
+      tags:
+      - notifications
       summary: Return a constructed myADS query
       description: |
         Given a myADS ID for a single notification setup, use the inputed data to build the full query(ies), ready for execution.
-      tags:
-        - notifications
-      security:
-        - ApiKeySecurity: []
       parameters:
-        - $ref: '#/components/parameters/myadsId'
+      - $ref: '#/components/parameters/myadsId'
       responses:
-        '200':
+        "200":
           description: |
             Constructed query and sort parameter. For the keyword and arxiv template-type queries, more than one query and sort parameter will be returned.
           content:
@@ -3562,19 +3668,19 @@ paths:
                       type: string
                     sort:
                       type: string
-        '400':
+        "400":
           description: Malformed request
-        '404':
+        "404":
           description: Notification not found
+      security:
+      - ApiKeySecurity: []
   /vis/author-network:
     post:
+      tags:
+      - visualizations
       summary: Returns author network data
       description: |
         Used to generate our author network visualization, given an input set of bibcodes, returns the author network data
-      tags:
-        - visualizations
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input bibcodes
@@ -3583,7 +3689,7 @@ paths:
             schema:
               $ref: '#/components/schemas/bibcodesObject'
       responses:
-        '200':
+        "200":
           description: Author network data
           content:
             application/json:
@@ -3657,17 +3763,17 @@ paths:
                           type: array
                           items:
                             type: integer
-        '403':
+        "403":
           description: Error with request
+      security:
+      - ApiKeySecurity: []
   /vis/paper-network:
     post:
+      tags:
+      - visualizations
       summary: Returns paper network data
       description: |
         Used to generate our paper network visualization, given an input set of bibcodes, returns the paper network data
-      tags:
-        - visualizations
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input bibcodes
@@ -3676,7 +3782,7 @@ paths:
             schema:
               $ref: '#/components/schemas/bibcodesObject'
       responses:
-        '200':
+        "200":
           description: Paper network data
           content:
             application/json:
@@ -3702,9 +3808,9 @@ paths:
                             type: boolean
                           graph:
                             type: array
-                            default: []
                             items:
                               type: integer
+                            default: []
                           nodes:
                             type: array
                             items:
@@ -3752,9 +3858,9 @@ paths:
                             type: boolean
                           graph:
                             type: array
-                            default: []
                             items:
                               type: integer
+                            default: []
                           nodes:
                             type: array
                             items:
@@ -3791,17 +3897,17 @@ paths:
                                   type: integer
                                 target:
                                   type: integer
-        '403':
+        "403":
           description: Error with request
+      security:
+      - ApiKeySecurity: []
   /vis/word-cloud:
     post:
+      tags:
+      - visualizations
       summary: Returns the word cloud data
       description: |
         Used to generate our word/concept cloud visualization, given an input query, returns the word cloud data
-      tags:
-        - visualizations
-      security:
-        - ApiKeySecurity: []
       requestBody:
         description: |
           JSON containing the input query
@@ -3811,29 +3917,29 @@ paths:
               type: object
               properties:
                 q:
+                  type: array
                   description: |
                     Query string; can include search tags. If using quotes, make sure to escape them.
-                  type: array
+                  example:
+                  - "author:\"huchra, john\""
                   items:
                     type: string
-                  example:
-                    - author:"huchra, john"
                 sort:
                   type: array
+                  example:
+                  - "date desc, bibcode desc"
                   items:
                     type: string
-                  example:
-                    - date desc, bibcode desc
                 rows:
+                  type: array
                   description: |
                     Number of records to use in generating the word cloud; currently the maximum allowed is 500.
-                  type: array
+                  example:
+                  - 150
                   items:
                     type: integer
-                  example:
-                    - 150
       responses:
-        '200':
+        "200":
           description: Word cloud data
           content:
             application/json:
@@ -3841,242 +3947,33 @@ paths:
                 type: object
                 properties:
                   word:
-                    description: Keywords are the words in the cloud
                     type: object
                     properties:
                       idf:
-                        description: Inverse document frequency
                         type: number
+                        description: Inverse document frequency
                       record_count:
                         type: integer
                       total_occurrences:
                         type: integer
-        '403':
+                    description: Keywords are the words in the cloud
+        "403":
           description: Error with request
+      security:
+      - ApiKeySecurity: []
 components:
-  securitySchemes:
-    ApiKeySecurity:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-  parameters:
-    q:
-      name: q
-      description: Query string; for detailed documentation go to https://ui.adsabs.harvard.edu/help/search/search-syntax
-      in: query
-      required: true
-      schema:
-        type: string
-      example: author%3Amart%C3%ADnez+neutron+star
-    fq:
-      name: fq
-      description: Additional filters applied on top of the results of the main query.
-      in: query
-      schema:
-        type: array
-        maxItems: 10
-        items:
-          type: string
-      style: form
-      explode: true
-    fl:
-      name: fl
-      description: Comma delimited set of fields to return; default is 'id'
-      in: query
-      style: form
-      explode: false
-      example: bibcode,author,title
-      schema:
-        type: array
-        default: id
-        uniqueItems: true
-        items:
-          type: string
-          enum:
-            - abstract
-            - ack
-            - aff
-            - aff_id
-            - alternate_bibcode
-            - alternate_title
-            - arxiv_class
-            - author
-            - author_count
-            - author_norm
-            - bibcode
-            - bibgroup
-            - bibstem
-            - citation
-            - citation_count
-            - cite_read_boost
-            - classic_factor
-            - comment
-            - copyright
-            - data
-            - database
-            - date
-            - doctype
-            - doi
-            - eid
-            - entdate
-            - entry_date
-            - esources
-            - facility
-            - first_author
-            - first_author_norm
-            - grant
-            - grant_agencies
-            - grant_id
-            - id
-            - identifier
-            - indexstamp
-            - inst
-            - isbn
-            - issn
-            - issue
-            - keyword
-            - keyword_norm
-            - keyword_schema
-            - lang
-            - links_data
-            - nedid
-            - nedtype
-            - orcid_pub
-            - orcid_other
-            - orcid_user
-            - page
-            - page_count
-            - page_range
-            - property
-            - pub
-            - pub_raw
-            - pubdate
-            - pubnote
-            - read_count
-            - reference
-            - simbid
-            - title
-            - vizier
-            - volume
-            - year
-    start:
-      name: start
-      description: For pagination, offset of the first returned result (default=0)
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-    rows:
-      name: rows
-      description: How many records to return for this request (default=10, maximum=2000)
-      in: query
-      schema:
-        type: integer
-        default: 10
-        maximum: 2000
-    sort:
-      name: sort
-      description: |
-        The format is 'field' + 'direction' where direction is one of 'asc' or 'desc' and field is any of the valid indexes. The default sorting is by relevance (computed by our search engine). Example\: 'sort=read_count+desc' Some useful fields to sort by may be date, citation_count, or read_count.
-      in: query
-      schema:
-        type: string
-        enum:
-          - id asc
-          - author_count asc
-          - bibcode asc
-          - citation_count asc
-          - citation_count_norm asc
-          - classic_factor asc
-          - first_author asc
-          - date asc
-          - entry_date asc
-          - read_count asc'
-          - score asc
-          - id desc
-          - author_count desc
-          - bibcode desc
-          - citation_count desc
-          - citation_count_norm desc
-          - classic_factor desc
-          - first_author desc
-          - date desc
-          - entry_date desc
-          - read_count desc
-          - score desc
-    queryId:
-      name: queryId
-      description: QID returned from the POST operation
-      required: true
-      in: path
-      schema:
-        type: string
-    bibcode:
-      name: bibcode
-      description: Bibcode to export
-      required: true
-      in: path
-      schema:
-        type: string
-    link:
-      name: link
-      description: Query URL
-      required: true
-      in: path
-      schema:
-        type: string
-    JournalBibstem:
-      name: bibstem
-      description: |
-        (Case-sensitive) ADS identifier for a publication, used to create bibcodes
-      in: path
-      example: ApJS
-      required: true
-      schema:
-        type: string
-    JournalJournalName:
-      name: journalname
-      description: Search string
-      required: true
-      in: path
-      example: Astro%20Jour
-      schema:
-        type: string
-    JournalVolume:
-      name: volume
-      description: publication volume
-      in: path
-      required: true
-      schema:
-        type: string
-    JournalISSN:
-      name: issn
-      description: Search string
-      required: true
-      in: path
-      example: 0004-637X
-      schema:
-        type: string
-    myadsId:
-      name: myads_id
-      description: ID from one myADS notification, taken from the response to `/vault/notifications`
-      required: true
-      in: path
-      schema:
-        type: integer
   schemas:
     responseHeader:
       type: object
       properties:
         status:
-          description: Status code as returned by the search engine
           type: integer
+          description: Status code as returned by the search engine
         QTime:
           type: integer
-          description: search time in millisecs (only search, without faceting, latency and all other steps)
+          description: "search time in millisecs (only search, without faceting, latency\
+            \ and all other steps)"
         parameters:
-          description: Input search parameters
           type: object
           properties:
             q:
@@ -4087,10 +3984,11 @@ components:
               type: string
             rows:
               type: string
+          description: Input search parameters
     doc:
-      type: object
       required:
-        - id
+      - id
+      type: object
       properties:
         id:
           type: string
@@ -4120,139 +4018,18 @@ components:
           type: string
           description: serialized JSON
     q:
-      name: q
       description: Query string; for detailed documentation go to https://ui.adsabs.harvard.edu/help/search/search-syntax
-      in: query
-      required: true
-      schema:
-        type: string
       example: author%3Amart%C3%ADnez+neutron+star
     fl:
-      name: fl
       description: Comma delimited set of fields to return; default is 'id'
-      in: query
-      style: form
-      explode: false
-      example: bibcode,author,title
-      schema:
-        type: array
-        default: id
-        uniqueItems: true
-        items:
-          type: string
-          enum:
-            - abstract
-            - ack
-            - aff
-            - aff_id
-            - alternate_bibcode
-            - alternate_title
-            - arxiv_class
-            - author
-            - author_count
-            - author_norm
-            - bibcode
-            - bibgroup
-            - bibstem
-            - citation
-            - citation_count
-            - cite_read_boost
-            - classic_factor
-            - comment
-            - copyright
-            - data
-            - database
-            - date
-            - doctype
-            - doi
-            - eid
-            - entdate
-            - entry_date
-            - esources
-            - facility
-            - first_author
-            - first_author_norm
-            - grant
-            - grant_agencies
-            - grant_id
-            - id
-            - identifier
-            - indexstamp
-            - inst
-            - isbn
-            - issn
-            - issue
-            - keyword
-            - keyword_norm
-            - keyword_schema
-            - lang
-            - links_data
-            - nedid
-            - nedtype
-            - orcid_pub
-            - orcid_other
-            - orcid_user
-            - page
-            - page_count
-            - page_range
-            - property
-            - pub
-            - pub_raw
-            - pubdate
-            - pubnote
-            - read_count
-            - reference
-            - simbid
-            - title
-            - vizier
-            - volume
-            - year
+      example: "bibcode,author,title"
     start:
-      name: start
-      description: For pagination, offset of the first returned result (default=0)
-      in: query
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
+      description: "For pagination, offset of the first returned result (default=0)"
     rows:
-      name: rows
-      description: How many records to return for this request (default=10, maximum=2000)
-      in: query
-      schema:
-        type: integer
-        default: 10
-        maximum: 2000
+      description: "How many records to return for this request (default=10, maximum=2000)"
     sort:
-      name: sort
       description: |
         The format is 'field' + 'direction' where direction is one of 'asc' or 'desc' and field is any of the valid indexes. The default sorting is by relevance (computed by our search engine). Example\: 'sort=read_count+desc' Some useful fields to sort by may be date, citation_count, or read_count.
-      in: query
-      schema:
-        type: string
-        enum:
-          - id asc
-          - author_count asc
-          - bibcode asc
-          - citation_count asc
-          - citation_count_norm asc
-          - classic_factor asc
-          - first_author asc
-          - date asc
-          - entry_date asc
-          - read_count asc'
-          - score asc
-          - id desc
-          - author_count desc
-          - bibcode desc
-          - citation_count desc
-          - citation_count_norm desc
-          - classic_factor desc
-          - first_author desc
-          - date desc
-          - entry_date desc
-          - read_count desc
-          - score desc
     vaultObject:
       type: object
       properties:
@@ -4300,7 +4077,7 @@ components:
           description: Description of library
         permission:
           type: string
-          description: Permission type, can be 'read', 'write', 'admin', or 'owner'
+          description: "Permission type, can be 'read', 'write', 'admin', or 'owner'"
         id:
           type: string
           description: Library ID
@@ -4308,9 +4085,9 @@ components:
           type: string
           description: Date library was last modified
     bibcodeObject:
-      type: object
       required:
-        - bibcode
+      - bibcode
+      type: object
       properties:
         bibcode:
           type: array
@@ -4319,9 +4096,9 @@ components:
           items:
             type: string
     bibcodesObject:
-      type: object
       required:
-        - bibcodes
+      - bibcodes
+      type: object
       properties:
         bibcodes:
           type: array
@@ -4667,8 +4444,8 @@ components:
         frequency:
           type: string
           enum:
-            - daily
-            - weekly
+          - daily
+          - weekly
         id:
           type: integer
         name:
@@ -4676,15 +4453,15 @@ components:
         template:
           type: string
           enum:
-            - arxiv
-            - authors
-            - citations
-            - keyword
+          - arxiv
+          - authors
+          - citations
+          - keyword
         type:
           type: string
           enum:
-            - template
-            - query
+          - template
+          - query
         updated:
           type: string
     myADSdetailResponse:
@@ -4719,15 +4496,15 @@ components:
             type: object
             properties:
               numfound:
-                readOnly: true
                 type: integer
                 description: |
                   Number of docs this query found (the last time it was executed; this number is up to date only when the query is stored). But if you see number higher than 0 then you can be sure that the query was executed.
-              qid:
                 readOnly: true
+              qid:
                 type: string
                 description: |
                   Query ID (unique hash identifying all the parameters; it is computed from the supplied query parameters)
+                readOnly: true
               query:
                 type: string
                 description: |
@@ -4783,6 +4560,240 @@ components:
                           type: string
                         url:
                           type: string
+  parameters:
+    q:
+      name: q
+      in: query
+      description: Query string; for detailed documentation go to https://ui.adsabs.harvard.edu/help/search/search-syntax
+      required: true
+      style: form
+      explode: true
+      schema:
+        type: string
+      example: author%3Amart%C3%ADnez+neutron+star
+    fq:
+      name: fq
+      in: query
+      description: Additional filters applied on top of the results of the main query.
+      required: false
+      style: form
+      explode: true
+      schema:
+        maxItems: 10
+        type: array
+        items:
+          type: string
+    fl:
+      name: fl
+      in: query
+      description: Comma delimited set of fields to return; default is 'id'
+      required: false
+      style: form
+      explode: false
+      schema:
+        uniqueItems: true
+        type: array
+        items:
+          type: string
+          enum:
+          - abstract
+          - ack
+          - aff
+          - aff_id
+          - alternate_bibcode
+          - alternate_title
+          - arxiv_class
+          - author
+          - author_count
+          - author_norm
+          - bibcode
+          - bibgroup
+          - bibstem
+          - citation
+          - citation_count
+          - cite_read_boost
+          - classic_factor
+          - comment
+          - copyright
+          - data
+          - database
+          - date
+          - doctype
+          - doi
+          - eid
+          - entdate
+          - entry_date
+          - esources
+          - facility
+          - first_author
+          - first_author_norm
+          - grant
+          - grant_agencies
+          - grant_id
+          - id
+          - identifier
+          - indexstamp
+          - inst
+          - isbn
+          - issn
+          - issue
+          - keyword
+          - keyword_norm
+          - keyword_schema
+          - lang
+          - links_data
+          - nedid
+          - nedtype
+          - orcid_pub
+          - orcid_other
+          - orcid_user
+          - page
+          - page_count
+          - page_range
+          - property
+          - pub
+          - pub_raw
+          - pubdate
+          - pubnote
+          - read_count
+          - reference
+          - simbid
+          - title
+          - vizier
+          - volume
+          - year
+      example: "bibcode,author,title"
+    start:
+      name: start
+      in: query
+      description: "For pagination, offset of the first returned result (default=0)"
+      required: false
+      style: form
+      explode: true
+      schema:
+        minimum: 0
+        type: integer
+        default: 0
+    rows:
+      name: rows
+      in: query
+      description: "How many records to return for this request (default=10, maximum=2000)"
+      required: false
+      style: form
+      explode: true
+      schema:
+        maximum: 2000
+        type: integer
+        default: 10
+    sort:
+      name: sort
+      in: query
+      description: |
+        The format is 'field' + 'direction' where direction is one of 'asc' or 'desc' and field is any of the valid indexes. The default sorting is by relevance (computed by our search engine). Example\: 'sort=read_count+desc' Some useful fields to sort by may be date, citation_count, or read_count.
+      required: false
+      style: form
+      explode: true
+      schema:
+        type: string
+        enum:
+        - id asc
+        - author_count asc
+        - bibcode asc
+        - citation_count asc
+        - citation_count_norm asc
+        - classic_factor asc
+        - first_author asc
+        - date asc
+        - entry_date asc
+        - read_count asc'
+        - score asc
+        - id desc
+        - author_count desc
+        - bibcode desc
+        - citation_count desc
+        - citation_count_norm desc
+        - classic_factor desc
+        - first_author desc
+        - date desc
+        - entry_date desc
+        - read_count desc
+        - score desc
+    queryId:
+      name: queryId
+      in: path
+      description: QID returned from the POST operation
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    bibcode:
+      name: bibcode
+      in: path
+      description: Bibcode to export
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    link:
+      name: link
+      in: path
+      description: Query URL
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    JournalBibstem:
+      name: bibstem
+      in: path
+      description: |
+        (Case-sensitive) ADS identifier for a publication, used to create bibcodes
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      example: ApJS
+    JournalJournalName:
+      name: journalname
+      in: path
+      description: Search string
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      example: Astro%20Jour
+    JournalVolume:
+      name: volume
+      in: path
+      description: publication volume
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+    JournalISSN:
+      name: issn
+      in: path
+      description: Search string
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+      example: 0004-637X
+    myadsId:
+      name: myads_id
+      in: path
+      description: "ID from one myADS notification, taken from the response to `/vault/notifications`"
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
   requestBodies:
     exportBody:
       description: |
@@ -4791,3 +4802,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/bibcodeObject'
+  securitySchemes:
+    ApiKeySecurity:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
